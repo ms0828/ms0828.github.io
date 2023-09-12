@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://ms0828.github.io/sitemap-index.xml
+Host: https://ms0828.github.io
