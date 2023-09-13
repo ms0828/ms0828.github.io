@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of MuSeong]]></title><description><![CDATA[개인 공부 블로그]]></description><link>https://ms0828.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Wed, 13 Sep 2023 08:42:15 GMT</lastBuildDate><item><title><![CDATA[JPA Start]]></title><description><![CDATA[JPA란? (Jpava Persistence API) 자바 진영의 ORM 표준 기술 ORM(Object-relational mapping)    객체는 객체대로 설계하고 데이터베이스는 데이터베이스대로 설계 ORM…]]></description><link>https://ms0828.github.io/jpa/</link><guid isPermaLink="false">https://ms0828.github.io/jpa/</guid><pubDate>Wed, 13 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;JPA란? (Jpava Persistence API)&lt;/h1&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of MuSeong]]></title><description><![CDATA[개인 공부 블로그]]></description><link>https://ms0828.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Wed, 13 Sep 2023 16:02:33 GMT</lastBuildDate><item><title><![CDATA[JPA 영속성 관리]]></title><link>https://ms0828.github.io/jpa_영속성관리/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_영속성관리/</guid><pubDate>Thu, 14 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h3&gt;&lt;/h3&gt;</content:encoded></item><item><title><![CDATA[JPA Start]]></title><description><![CDATA[JPA란? (Jpava Persistence API) 자바 진영의 ORM 표준 기술 ORM(Object-relational mapping)    객체는 객체대로 설계하고 데이터베이스는 데이터베이스대로 설계 ORM…]]></description><link>https://ms0828.github.io/jpa_시작/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_시작/</guid><pubDate>Wed, 13 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;JPA란? (Jpava Persistence API)&lt;/h1&gt;
 &lt;h3&gt;자바 진영의 ORM 표준 기술&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;p&gt;ORM(Object-relational mapping) &lt;br&gt;  &lt;/p&gt;
@@ -34,7 +34,7 @@
 &lt;hr&gt;
 &lt;h4&gt;공부 목표&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;객체와 테이블을 적합하게 설계하고 &lt;strong&gt;JPA&lt;/strong&gt;를 사용하여 서로 매핑하는 것이 관건&lt;/li&gt;
+&lt;li&gt;객체와 테이블을 적합하게 설계하고 &lt;strong&gt;JPA&lt;/strong&gt;를 사용하여 서로 매핑하는 방법&lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;JPA의 내부 동작 방식 이해&lt;/p&gt;
 &lt;blockquote&gt;
@@ -42,7 +42,67 @@
 &lt;/blockquote&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;</content:encoded></item><item><title><![CDATA[🤩 4. Other Tips]]></title><description><![CDATA[How to change the favicon? The favicon is located in . If you replace that image, the favicon will change. If you want to change the name of…]]></description><link>https://ms0828.github.io/other-tips/</link><guid isPermaLink="false">https://ms0828.github.io/other-tips/</guid><pubDate>Tue, 04 May 2021 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;How to change the favicon?&lt;/h2&gt;
+&lt;hr&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;h3&gt;객체와 테이블 매핑하기&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Entity : JPA가 관리하는 객체&lt;/li&gt;
+&lt;li&gt;Id: 데이터베이스 PK(Primary Key)와 매핑할 필드에 쓰는 어노테이션&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Entity Manager Factory : 어플리케이션 시작할 때 한 번 생성 (DB당 하나)&lt;/h4&gt;
+&lt;h4&gt;Entity Manager : 사용자 DB 접근 단위로 생성 후 종료&lt;/h4&gt;
+&lt;p&gt;entityManager.persist(저장할 객체);&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;이 때 저장할 객체는 테이블과 매핑이 되어야한다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;@Entity 와 @Id를 이용해서
+저장할 특정 테이블을 지정하고 싶으면 @Table(name = &quot;테이블 이름&quot;) 사용하기, default는 알아서 매핑할 테이블을 찾음&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h4&gt;Transaction : JPA를 이용해서 데이터를 변경하는 작업 위에는 항상 Transaction 안에서 작업해야한다. (데이터베이스 커넥션으로 생각하면 된다.)&lt;/h4&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;EntityTransaction tx = em.getTransaction();
+tx.begin();
+
+//데이터 작업 수행
+
+
+tx.commit();&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;em. persist(객체)&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;객체를 데이터베이스에 등록
+&lt;br&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;em.set(필드명)(value)&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;JPA는 필드를 수정하고 따로 트랜젝션을 커밋하지 않아도, 커밋 시점에 변경사항을 확인하여 자동으로 반영한다 (커밋 이전 업데이트 쿼리 실행).&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;em.find(찾으려는 객체.class, PrimaryKey)&lt;/h3&gt;
+&lt;br&gt;
+### em.remove(객체)
+&gt; 객체를 테이블에서 삭제
+&lt;br&gt;
+&lt;br&gt;
+&lt;h3&gt;JPQL (&lt;strong&gt;객체를 대상&lt;/strong&gt;으로 한 객체지향 Query)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;JPA를 완벽하게 사용하기 위해서는 JPQL를 사용할 줄 알아야  한다. &lt;/li&gt;
+&lt;li&gt;모든 DB 데이터를 객체로 변환해서 검색하는 것은 불가&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;애플리케이션이 필요한 데이터만 DB에서 불러오려면 검색 조건이 포함된 SQL이 필요 -&gt; JPQL 등장&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;정리하면 JPA는 SQL을 추상화한 JPQL이라는 객체 지향 쿼리 언어 제공&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;테이블을 대상으로 하지 않고, 객체(엔티티)를 대상으로 하기 때문에, DB에 의존적이지 않은 코드 작성이 가능하다.
+&lt;br&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5&gt;사용 예제&lt;/h5&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;em.createQuery(&quot;쿼리문&quot;, 객체명.class).getResultList();&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[🤩 4. Other Tips]]></title><description><![CDATA[How to change the favicon? The favicon is located in . If you replace that image, the favicon will change. If you want to change the name of…]]></description><link>https://ms0828.github.io/other-tips/</link><guid isPermaLink="false">https://ms0828.github.io/other-tips/</guid><pubDate>Tue, 04 May 2021 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;How to change the favicon?&lt;/h2&gt;
 &lt;p&gt;The favicon is located in &lt;code class=&quot;language-text&quot;&gt;static/favicon.png&lt;/code&gt;. If you replace that image, the favicon will change.&lt;/p&gt;
 &lt;p&gt;If you want to change the name of the favicon, change the &lt;code class=&quot;language-text&quot;&gt;icon&lt;/code&gt; property of &lt;code class=&quot;language-text&quot;&gt;gatsby-plugin-manifest&lt;/code&gt; in &lt;code class=&quot;language-text&quot;&gt;gatsby-config.js&lt;/code&gt;.&lt;/p&gt;
 &lt;h2&gt;Utterance is not working properly.&lt;/h2&gt;
