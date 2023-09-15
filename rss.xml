@@ -1,4 +1,232 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of MuSeong]]></title><description><![CDATA[개인 공부 블로그]]></description><link>https://ms0828.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Wed, 13 Sep 2023 16:02:33 GMT</lastBuildDate><item><title><![CDATA[JPA 영속성 관리]]></title><link>https://ms0828.github.io/jpa_영속성관리/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_영속성관리/</guid><pubDate>Thu, 14 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h3&gt;&lt;/h3&gt;</content:encoded></item><item><title><![CDATA[JPA Start]]></title><description><![CDATA[JPA란? (Jpava Persistence API) 자바 진영의 ORM 표준 기술 ORM(Object-relational mapping)    객체는 객체대로 설계하고 데이터베이스는 데이터베이스대로 설계 ORM…]]></description><link>https://ms0828.github.io/jpa_시작/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_시작/</guid><pubDate>Wed, 13 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;JPA란? (Jpava Persistence API)&lt;/h1&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of MuSeong]]></title><description><![CDATA[개인 공부 블로그]]></description><link>https://ms0828.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Fri, 15 Sep 2023 15:38:15 GMT</lastBuildDate><item><title><![CDATA[JPA 엔티티 매핑]]></title><description><![CDATA[객체와 테이블 매핑 본 블로그는 인프런 '김영한'님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+출처  https://www.inflearn.com/course/ORM-JPA-Basic…]]></description><link>https://ms0828.github.io/jpa_엔티티매핑/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_엔티티매핑/</guid><pubDate>Thu, 14 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;객체와 테이블 매핑&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+&lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/ORM-JPA-Basic&quot;&gt;https://www.inflearn.com/course/ORM-JPA-Basic&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;h3&gt;@Entity&lt;br&gt;&lt;/h3&gt;
+&lt;p&gt;  @Entity가 붙은 클래스는 JPA가 관리하고, 이를 Entity라고 함&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;JPA를 사용하여 테이블과 매핑할 클래스에 적용&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;h3&gt;@Table&lt;/h3&gt;
+&lt;p&gt;  Entity와 매핑할 테이블을 지정&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;기본값은 Entity 이름(클래스 이름)을 그대로 사용&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;사용예시&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;@Entity
+@Table(name = &quot;매핑할 테이블 이름&quot;)
+...클래스 구현....&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;h2&gt;필드와 Column 매핑&lt;/h2&gt;
+&lt;p&gt;테이블과 적절히 매핑하기 위해 필드 위에 적는 에노테이션(@) 정리&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;각각 많은 속성이 있으므로 필요할 때 직접 찾아보기&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;@Column
+&lt;br&gt;&lt;br&gt;
+EX)&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;@Column(name = &quot;필드와 매핑할 테이블 이름&quot;)  //기본 값은 객체의 필드 이름이다.
+String address;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;br&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;@Enumerated&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;자바 enum 타입을 매핑할 때 사용&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;@Enumerated(value = EnumType.STRING)  
+EnumClass e;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;EnumType.ORDINAL 속성은 서비스 오류에 대한 여지가 있으므로 사용하지말자.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;br&gt;
+&lt;ol start=&quot;3&quot;&gt;
+&lt;li&gt;
+&lt;p&gt;@Lob&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;비교적 크기가 큰 데이터를 저장할 때 주로 사용&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;필드 타입이 문자면 CLOB로 매핑, 나머지는 BLOB로 매핑
+&lt;br&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol start=&quot;4&quot;&gt;
+&lt;li&gt;
+&lt;p&gt;@Transient&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;데이터로 관리할 필요가 없는 필드에 사용, DB에 따로 매핑하지 않게 된다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;h2&gt;키 매핑 (Primary Key)&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;@Id&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;pk로 지정한 필드에 직접 key를 지정할 때는 이 에노테이션만 사용&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;@GeneratedValue&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;이 에노테이션을 사용하면, 해당 필드에 대한 pk가 자동생성되어 DB에 등록된다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;GeneratedValue를 사용한 PK 할당 전략들&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;@Id
+@GeneratedValue(strategy = GenerationType.***)
+private Long id;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;IDENTITY&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;기본 키 생성을 데이터베이스에 맡긴다. 각각의 데이터베이스 엔진의 방식에 따라 키 값을 처리해서 저장&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;IDENTITY 전략을 사용하면, em.persist() 시점에 즉시 INSERT문을 실행하여 DB에 저장하고 영속성 컨텍스트로 반환한다.
+(원래는 em.persist() 실행 시 SQL문을 바로 실행하지 않으나, 영속성 컨텍스트 1차 캐시에 entity를 저장하려면 PK값이 필요하다. 따라서 예외상황으로 IDENTITY 전략 사용 시, 데이터를 저장할 때 Insert 실행문이 즉시 실행된다.) &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;SEQUENCE 전략&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;데이터베이스 시퀀스에 값을 순서대로 생성하여 키 값을 관리하는 DB 오브젝트를 사용하는 방법 &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;이 전략을 사용하면, 사용하는 데이터베이스에 시퀀스가 생성되고 관리된다.&lt;/p&gt;
+&lt;/blockquote&gt;</content:encoded></item><item><title><![CDATA[JPA 영속성 관리]]></title><description><![CDATA[JPA 내부 동작 원리 본 블로그는 인프런 '김영한'님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+출처  https://www.inflearn.com/course/ORM-JPA-Basic…]]></description><link>https://ms0828.github.io/jpa_영속성관리/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_영속성관리/</guid><pubDate>Thu, 14 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;JPA 내부 동작 원리&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+&lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/ORM-JPA-Basic&quot;&gt;https://www.inflearn.com/course/ORM-JPA-Basic&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;h3&gt;1. Transaction&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;JPA를 이용해서 데이터를 변경하는 작업 위에는 항상 Transaction 안에서 작업해야한다. (데이터베이스 커넥션으로 생각하면 된다.)
+&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;데이터 변경 시, 엔티티 매니저가 반환하는 Transaction을 시작해야 함.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;EntityManager em = entityManagerFactory.createEntityManager();&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;EntityTransaction tx = em.getTransaction();&lt;/p&gt;
+&lt;p&gt;tx.begin();&lt;/p&gt;
+&lt;p&gt;//데이터 작업 수행&lt;/p&gt;
+&lt;p&gt;tx.commit();&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;### 2.영속성 컨텍스트
+* 우리가 Entity를 DB에 저장할 때 entitymanager.persis(Entity) 로 저장하지만, 이는 사실 DB에 저장하는 것이 아니라 &apos;영속성 컨텍스트&apos;에 저장하는 것
+
+* EntityManager를 통해서 접근할 수 있다.
+
+&amp;lt;br&gt;
+
+&gt; 그럼 DB에 저장은 언제?
+&gt; * Transaction이 Commit 하는 시점에 영속성 컨텍스트에 있는 데이터가 저장 된다.
+--- 
+
+
+
+### 3. 엔티티의 생명주기
+* 비영속 
+&amp;lt;br&gt;영속성 컨텍스트와 상관없는 새로운 상태&amp;lt;br&gt;
+ &gt; ex) 객체가 생성된 상태
+&amp;lt;br&gt;
+
+* 영속
+&amp;lt;br&gt;영속성 컨텍스트에 관리되는 상태&amp;lt;br&gt; 
+&gt; ex) entityManager.persist()로 객체를 영속성 컨텍스트에 등록한 상태
+&amp;lt;br&gt;
+
+* 준영속
+&amp;lt;br&gt;영속성 컨텍스트에 저장되었다가 분리된 상태
+&gt; ex) entityManager.detach(객체)
+&amp;lt;br&gt;
+
+* 삭제
+&amp;lt;br&gt;객체가 삭제된 상태
+&gt; entityManager.remove(객체)
+
+&amp;lt;br&gt;
+&amp;lt;br&gt;
+&amp;lt;br&gt;
+
+
+
+## 영속성 컨텍스트는 왜 존재하는가?
+
+&amp;lt;br&gt;
+
+**1. 1차 캐시&amp;lt;br&gt;&amp;lt;br&gt;**
+![Alt text](image.png)
+&gt; 매번 DB에 접근하지 않고 1차 캐시를 이용하여 접근 속도 및 성능 향상
+
+&amp;lt;br&gt;
+
+**2. 동일성 보장**&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Entity a = entityManager.find(Entity.class, &quot;key1&quot;);
+Entity b = entityManager.find(Entity.class, &quot;key1&quot;);&lt;/p&gt;
+&lt;p&gt;System.out.println(a == b); //동일성 보장&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;&gt; 같은 Transaction에서 Entity를 접근할 때, 객체들의 동일성을 보장한다.
+
+&amp;lt;br&gt;
+
+**3. 트랜잭션을 지원하는 쓰기 지연**
+&gt; 데이터 변경 시 즉시 SQL이 실행되는 것이 아니라 &quot;쓰기 지연 SQL 저장소&quot;에 변경 내역에 관한 SQL문을 저장해뒀다가, Transaction 커밋 시점에 SQL을 실행한다.
+&gt; * 최적화 측면에서의 이점
+
+&amp;lt;br&gt;
+
+**4. 변경 감지(Dirty Checking)**
+&gt; 데이터 변경 시, update를 따로 실행하지 않아도, 영속성 컨텍스트에서 데이터 변경 내역을 추적한다. 그리고 커밋 시점에 변경 내역을 자동으로 처리한다. (3번 내용과 유사)
+
+**5. 지연 로딩(Lazy Loading)**
+
+&amp;lt;br&gt;
+&amp;lt;br&gt;
+&amp;lt;br&gt;
+
+## 플러시
+&gt; Transaction을 커밋할 때, 실질적으로 변경 내역에 대해 모아뒀던 SQL을 실질적으로 실행하는 기능  
+
+* 플러시 실행 시, 영속성 컨텍스트를 비우지 않는다.
+* Transaction 작업 단위에서 실행된다.
+
+&amp;lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[JPA Start]]></title><description><![CDATA[JPA란? (Jpava Persistence API) 본 블로그는 인프런 '김영한'님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+출처  https://www.inflearn.com…]]></description><link>https://ms0828.github.io/jpa_시작/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_시작/</guid><pubDate>Wed, 13 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;JPA란? (Jpava Persistence API)&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+&lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/ORM-JPA-Basic&quot;&gt;https://www.inflearn.com/course/ORM-JPA-Basic&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;br&gt;
 &lt;h3&gt;자바 진영의 ORM 표준 기술&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;p&gt;ORM(Object-relational mapping) &lt;br&gt;  &lt;/p&gt;
@@ -9,17 +237,55 @@
 &lt;/blockquote&gt;
 &lt;br&gt;
 &lt;h3&gt;객체를 자바 컬렉션에서 다루듯이 객체와 관계형 DB의 관계(매핑)를 쉽게 다루는 기술&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Application과 JDBC API 사이에서 동작한다.&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 542px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/fc665b4829b9fb1cdd8e9a8e24f71b88/47f85/image.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 46.470588235294116%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAYAAAAywQxIAAAACXBIWXMAABJ0AAASdAHeZh94AAAA8klEQVR42oWSRw7DQAhFc//reeeNV+69dxM9FCQ7dhQkBDPA58PMSz4yz7N0XSd93//UdV3ln7zMAWzbNjmOQ/Z9V7ssizRNo7E8zyVJkksxeTQh9xGQhLMMw6CgsIdhWZbqk8eZJtiiKDTvBkgnWNZ1rf40TTKOo7JEsyxTAOL4KHEa0fwCyAXdXdcVx3HE9309x3EsnudpcRAEygQlv21bqapKfYAvgHSGHawoYDc2MpYzU4RhqLukEWCMD8Mb4NMOSbKdEYelPQCW3UVRpCu4PQqXFMHGlJHSNNXlmzWw88s+fhvGZaxv5d5i2LM8Ab8BGAW+mthwd3IAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;Alt text&apos; title=&apos;&apos; src=&apos;/static/fc665b4829b9fb1cdd8e9a8e24f71b88/47f85/image.png&apos; srcset=&apos;/static/fc665b4829b9fb1cdd8e9a8e24f71b88/e7570/image.png 170w,
+/static/fc665b4829b9fb1cdd8e9a8e24f71b88/f46e7/image.png 340w,
+/static/fc665b4829b9fb1cdd8e9a8e24f71b88/47f85/image.png 542w&apos; sizes=&apos;(max-width: 542px) 100vw, 542px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;Alt text&lt;/figcaption&gt;
+  &lt;/figure&gt;
+&lt;br&gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;기존에는 JDBC API를 사용하여 사용자가 직접 SQL를 작성하여 DB와 통신&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;기존에는 JDBC API를 사용하여 사용자가 직접 SQL를 작성하여 DB와 통신&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;기존의 SQL 작업(JDBC API)의 문제점은 객체 지향적으로 설계할수록 객체와 테이블의 매핑 작업이 너무 많아지고 사용하기 불편하였다. &lt;br&gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt; 기존의 SQL 작업의 문제점은 객체 지향적으로 설계할수록 객체와 테이블의 매핑 작업이 너무 많아지고 사용하기 불편하였다. &lt;br&gt;&lt;/p&gt;
+&lt;p&gt;이러한 불편함을 해소하기 위해 등장한 JPA&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;/blockquote&gt;
-&lt;h4&gt;이러한 불편함을 해소하기 위해 등장한 JPA&lt;/h4&gt;
+&lt;hr&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;h3&gt;JPA는 인터페이스의 집합이다.&lt;/h3&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 450px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/4da7762fd1f1660e1b464f77c4c404aa/31401/image-1.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 38.82352941176471%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAICAYAAAD5nd/tAAAACXBIWXMAABJ0AAASdAHeZh94AAAA2ElEQVR42oWRawqEMAyEvf99PIOnUMS3qPjEt2b5Ai37Q3cLIel0MhMaZxxHadtW+r6XaZrkPE8bx3HYzBu8sixlGAbFn46T57kEQSBZlil5nmdZlkUFuq7TGlN4nueJ67par+v6LMjDtm1i8tvBIIoi8X1fjV4nfBO471sNTCCAKRNTg+37rvm6rv+C/BtkhGkwBohy/8YQ/ikIERJhGt8wjMHM/VGwaRqJ41ijrmudAiwMQ8VYHiJVVelC+VuWyvSPghAhsE2amQLBNE0VK4rCYkmSWC7GHzCpbbjysdMjAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;Alt text&apos; title=&apos;&apos; src=&apos;/static/4da7762fd1f1660e1b464f77c4c404aa/31401/image-1.png&apos; srcset=&apos;/static/4da7762fd1f1660e1b464f77c4c404aa/e7570/image-1.png 170w,
+/static/4da7762fd1f1660e1b464f77c4c404aa/f46e7/image-1.png 340w,
+/static/4da7762fd1f1660e1b464f77c4c404aa/31401/image-1.png 450w&apos; sizes=&apos;(max-width: 450px) 100vw, 450px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;Alt text&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;공부 목표로 하는 것은 JPA의 구현체 &quot;Hibernate&quot;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;br&gt;
 &lt;hr&gt;
 &lt;h2&gt;왜 JPA를 사용하는가?&lt;/h2&gt;
 &lt;ul&gt;
+&lt;li&gt;DateBase 의존적인 개발에서 객체 중심으로의 개발이 가능&lt;/li&gt;
 &lt;li&gt;개발 생산성 향상&lt;/li&gt;
 &lt;li&gt;개발 속도 향상 &lt;/li&gt;
 &lt;li&gt;유지보수 편리성&lt;br&gt;&lt;/li&gt;
@@ -32,7 +298,7 @@
 &lt;/ul&gt;
 &lt;br&gt;
 &lt;hr&gt;
-&lt;h4&gt;공부 목표&lt;/h4&gt;
+&lt;h4&gt;목표&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;객체와 테이블을 적합하게 설계하고 &lt;strong&gt;JPA&lt;/strong&gt;를 사용하여 서로 매핑하는 방법&lt;/li&gt;
 &lt;li&gt;
@@ -48,29 +314,6 @@
 &lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
-&lt;h3&gt;객체와 테이블 매핑하기&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Entity : JPA가 관리하는 객체&lt;/li&gt;
-&lt;li&gt;Id: 데이터베이스 PK(Primary Key)와 매핑할 필드에 쓰는 어노테이션&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4&gt;Entity Manager Factory : 어플리케이션 시작할 때 한 번 생성 (DB당 하나)&lt;/h4&gt;
-&lt;h4&gt;Entity Manager : 사용자 DB 접근 단위로 생성 후 종료&lt;/h4&gt;
-&lt;p&gt;entityManager.persist(저장할 객체);&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;이 때 저장할 객체는 테이블과 매핑이 되어야한다.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;@Entity 와 @Id를 이용해서
-저장할 특정 테이블을 지정하고 싶으면 @Table(name = &quot;테이블 이름&quot;) 사용하기, default는 알아서 매핑할 테이블을 찾음&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/blockquote&gt;
-&lt;h4&gt;Transaction : JPA를 이용해서 데이터를 변경하는 작업 위에는 항상 Transaction 안에서 작업해야한다. (데이터베이스 커넥션으로 생각하면 된다.)&lt;/h4&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;EntityTransaction tx = em.getTransaction();
-tx.begin();
-
-//데이터 작업 수행
-
-
-tx.commit();&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h3&gt;em. persist(객체)&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;p&gt;객체를 데이터베이스에 등록
@@ -102,184 +345,8 @@ tx.commit();&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h5&gt;사용 예제&lt;/h5&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;em.createQuery(&quot;쿼리문&quot;, 객체명.class).getResultList();&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[🤩 4. Other Tips]]></title><description><![CDATA[How to change the favicon? The favicon is located in . If you replace that image, the favicon will change. If you want to change the name of…]]></description><link>https://ms0828.github.io/other-tips/</link><guid isPermaLink="false">https://ms0828.github.io/other-tips/</guid><pubDate>Tue, 04 May 2021 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;How to change the favicon?&lt;/h2&gt;
-&lt;p&gt;The favicon is located in &lt;code class=&quot;language-text&quot;&gt;static/favicon.png&lt;/code&gt;. If you replace that image, the favicon will change.&lt;/p&gt;
-&lt;p&gt;If you want to change the name of the favicon, change the &lt;code class=&quot;language-text&quot;&gt;icon&lt;/code&gt; property of &lt;code class=&quot;language-text&quot;&gt;gatsby-plugin-manifest&lt;/code&gt; in &lt;code class=&quot;language-text&quot;&gt;gatsby-config.js&lt;/code&gt;.&lt;/p&gt;
-&lt;h2&gt;Utterance is not working properly.&lt;/h2&gt;
-&lt;p&gt;In the http environment, utterance may not work properly. Host your blog with https.&lt;/p&gt;
-&lt;h2&gt;How to set OG Image?&lt;/h2&gt;
-&lt;p&gt;Replace the &lt;code class=&quot;language-text&quot;&gt;og-image.png&lt;/code&gt; file in the &lt;code class=&quot;language-text&quot;&gt;/static&lt;/code&gt; directory with your own image file.&lt;/p&gt;
-&lt;h2&gt;Do you have another question?&lt;/h2&gt;
-&lt;p&gt;Please comment on this article or &lt;a href=&quot;https://github.com/devHudi/gatsby-starter-hoodie/issues&quot;&gt;open an issue&lt;/a&gt; in the gatsby-starter-hoodie repository. Your participation advances gatsby-starter-hoodie. Thank you 😎.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[🤔 3. Writing Guide]]></title><description><![CDATA[1. Add a post You can add posts by creating a new markdown document in the  path. 1-1. Post file structure There are two ways to add a new…]]></description><link>https://ms0828.github.io/writing-guide/</link><guid isPermaLink="false">https://ms0828.github.io/writing-guide/</guid><pubDate>Mon, 03 May 2021 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;1. Add a post&lt;/h2&gt;
-&lt;p&gt;You can add posts by creating a new markdown document in the &lt;code class=&quot;language-text&quot;&gt;contents/post&lt;/code&gt; path.&lt;/p&gt;
-&lt;h3&gt;1-1. Post file structure&lt;/h3&gt;
-&lt;p&gt;There are two ways to add a new document. The first is to create a markdown file for a single document without a directory. If you are writing about JavaScript, you can create a &lt;code class=&quot;language-text&quot;&gt;about-javascript.md&lt;/code&gt; file in the &lt;code class=&quot;language-text&quot;&gt;contents/posts&lt;/code&gt; directory.&lt;/p&gt;
-&lt;p&gt;The second is to create a directory and create an &lt;code class=&quot;language-text&quot;&gt;index.md&lt;/code&gt; file in it. This method is useful when the document contains several additional files such as picture files.&lt;/p&gt;
-&lt;p&gt;Each file name or directory name becomes a unique address of the document and can be accessed as follows. &lt;code class=&quot;language-text&quot;&gt;https://siteURL/about-javascript&lt;/code&gt;.&lt;/p&gt;
-&lt;h3&gt;1-2. Frontmatter&lt;/h3&gt;
-&lt;p&gt;The Markdown document you create contains the document&apos;s metadata called frontmatter.&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;---
-title: &quot;🤔 3. Writing Guide&quot;
-description: &quot;How to write and add a post?&quot;
-date: 2021-05-03
-update: 2021-05-03
-tags:
-  - hoodie
-  - writing-guide
-series: &quot;Getting started your blog with gatsby-starter-hoodie&quot;
----&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Above is the frontmatter of the document you are currently reading. Among them, title and date are required. It is recommended to enclose the string with spaces in quotation marks.&lt;/p&gt;
-&lt;h3&gt;1-3. Writing markdown&lt;/h3&gt;
-&lt;p&gt;If you have written a Frontmatter, you can write your markdown document under it. gatsby-starter-hoodie supports most Markdown syntax. To learn more about Markdown syntax, see the &lt;a href=&quot;https://guides.github.com/features/mastering-markdown/&quot;&gt;Mastering Markdown&lt;/a&gt; documentation on GitHub.&lt;/p&gt;
-&lt;h2&gt;2. Syntax Highlighting &amp;#x26; Katex&lt;/h2&gt;
-&lt;h3&gt;2-1. Syntax Highlighting&lt;/h3&gt;
-&lt;p&gt;Syntax highlighting based on Prism.JS is supported.&lt;/p&gt;
-&lt;h4&gt;Examples&lt;/h4&gt;
-&lt;p&gt;Javascript&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;console&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;Hello, world!&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Python&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;python&quot;&gt;&lt;pre class=&quot;language-python&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;Hello, world!&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;It supports a wider variety of other languages. Check it out on the &lt;a href=&quot;https://prismjs.com/&quot;&gt;Prism.js website&lt;/a&gt;.&lt;/p&gt;
-&lt;h3&gt;2-2. Katex&lt;/h3&gt;
-&lt;p&gt;It supports Katex syntax, you can easily express complex formulas.&lt;/p&gt;
-&lt;h4&gt;Inline mode&lt;/h4&gt;
-&lt;p&gt;&lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;E&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;msup&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;E = m c^{2}&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&quot;katex-html&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.68333em;vertical-align:0em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot; style=&quot;margin-right:0.05764em;&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.2777777777777778em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mrel&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.2777777777777778em;&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.8141079999999999em;vertical-align:0em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;msupsub&quot;&gt;&lt;span class=&quot;vlist-t&quot;&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:0.8141079999999999em;&quot;&gt;&lt;span style=&quot;top:-3.063em;margin-right:0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;2&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
-&lt;h4&gt;Block mode&lt;/h4&gt;
-&lt;span class=&quot;katex-display&quot;&gt;&lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; display=&quot;block&quot;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;msubsup&gt;&lt;mo&gt;∫&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;mi mathvariant=&quot;normal&quot;&gt;∞&lt;/mi&gt;&lt;/msubsup&gt;&lt;mi&gt;f&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;\int_{0}^{\infty} f(x) dx&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&quot;katex-html&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:2.326242em;vertical-align:-0.9119499999999999em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mop&quot;&gt;&lt;span class=&quot;mop op-symbol large-op&quot; style=&quot;margin-right:0.44445em;position:relative;top:-0.0011249999999999316em;&quot;&gt;∫&lt;/span&gt;&lt;span class=&quot;msupsub&quot;&gt;&lt;span class=&quot;vlist-t vlist-t2&quot;&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:1.414292em;&quot;&gt;&lt;span style=&quot;top:-1.7880500000000001em;margin-left:-0.44445em;margin-right:0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;0&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;top:-3.8129000000000004em;margin-right:0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;∞&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;vlist-s&quot;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:0.9119499999999999em;&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.16666666666666666em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot; style=&quot;margin-right:0.10764em;&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;mopen&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;mclose&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;x&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;
-&lt;h2&gt;3. Add images to a post&lt;/h2&gt;
-&lt;p&gt;You can easily embed images using relative paths. It is easy to manage documents containing images by creating a directory.&lt;/p&gt;
-&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
-    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; &apos;&gt;
-      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/69b244095d8c72158c9dd2d4ca59a7b1/aaf92/sample-image.jpg&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
-    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 61.1764705882353%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAMABQDASIAAhEBAxEB/8QAGAAAAgMAAAAAAAAAAAAAAAAAAAQBAgP/xAAVAQEBAAAAAAAAAAAAAAAAAAACAf/aAAwDAQACEAMQAAABUsxAixiE/wD/xAAbEAACAwADAAAAAAAAAAAAAAABAgADBBEiM//aAAgBAQABBQIFOW7ETHWtk0ezWFT/AP/EABURAQEAAAAAAAAAAAAAAAAAABBB/9oACAEDAQE/AYf/xAAXEQADAQAAAAAAAAAAAAAAAAAAAREh/9oACAECAQE/AWsIf//EABkQAAMBAQEAAAAAAAAAAAAAAAABIRECMf/aAAgBAQAGPwJaTWj0fXdaeIkMh//EABoQAQADAQEBAAAAAAAAAAAAAAEAETFRIUH/2gAIAQEAAT8hFdQ6EfUPBjowSgW0YQgXQ9r7FoKHSf/aAAwDAQACAAMAAAAQeN//xAAXEQEAAwAAAAAAAAAAAAAAAAAAAREh/9oACAEDAQE/EJwp/8QAFhEBAQEAAAAAAAAAAAAAAAAAABEh/9oACAECAQE/EIG3/8QAGhABAAMBAQEAAAAAAAAAAAAAAQARITFRQf/aAAgBAQABPxA3pFmq4m2wUjT9WvYy3aVDOTlbQ8O892CBa9ZtcY9TG1n/2Q==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
-  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;Sample Image Caption&apos; title=&apos;&apos; src=&apos;/static/69b244095d8c72158c9dd2d4ca59a7b1/a22ce/sample-image.jpg&apos; srcset=&apos;/static/69b244095d8c72158c9dd2d4ca59a7b1/0b705/sample-image.jpg 170w,
-/static/69b244095d8c72158c9dd2d4ca59a7b1/31389/sample-image.jpg 340w,
-/static/69b244095d8c72158c9dd2d4ca59a7b1/a22ce/sample-image.jpg 680w,
-/static/69b244095d8c72158c9dd2d4ca59a7b1/29373/sample-image.jpg 1020w,
-/static/69b244095d8c72158c9dd2d4ca59a7b1/232dc/sample-image.jpg 1360w,
-/static/69b244095d8c72158c9dd2d4ca59a7b1/aaf92/sample-image.jpg 1920w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
-  &lt;/a&gt;
-    &lt;/span&gt;
-    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;Sample Image Caption&lt;/figcaption&gt;
-  &lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;Images are loaded with Lazy Loading, so you can secure fast document loading speed.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;⚠ The extension of the file must be set to lowercase.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2&gt;4. Tagging&lt;/h2&gt;
-&lt;p&gt;&lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; margin-bottom: 16px;&apos;&gt;
-      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/82ce4bec7f5360eef32a473171b181af/6031b/tag-example.jpg&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
-    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 18.823529411764707%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAEABQDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAEF/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEAMQAAAB36AH/8QAFBABAAAAAAAAAAAAAAAAAAAAEP/aAAgBAQABBQJ//8QAFBEBAAAAAAAAAAAAAAAAAAAAEP/aAAgBAwEBPwE//8QAFBEBAAAAAAAAAAAAAAAAAAAAEP/aAAgBAgEBPwE//8QAFBABAAAAAAAAAAAAAAAAAAAAEP/aAAgBAQAGPwJ//8QAFRABAQAAAAAAAAAAAAAAAAAAEBH/2gAIAQEAAT8hj//aAAwDAQACAAMAAAAQAA//xAAUEQEAAAAAAAAAAAAAAAAAAAAQ/9oACAEDAQE/ED//xAAUEQEAAAAAAAAAAAAAAAAAAAAQ/9oACAECAQE/ED//xAAVEAEBAAAAAAAAAAAAAAAAAAABEP/aAAgBAQABPxABf//Z&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
-  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;tag example&apos; title=&apos;&apos; src=&apos;/static/82ce4bec7f5360eef32a473171b181af/a22ce/tag-example.jpg&apos; srcset=&apos;/static/82ce4bec7f5360eef32a473171b181af/0b705/tag-example.jpg 170w,
-/static/82ce4bec7f5360eef32a473171b181af/31389/tag-example.jpg 340w,
-/static/82ce4bec7f5360eef32a473171b181af/a22ce/tag-example.jpg 680w,
-/static/82ce4bec7f5360eef32a473171b181af/6031b/tag-example.jpg 737w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
-  &lt;/a&gt;
-    &lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;You can classify and search documents by tag set in Frontmatter. All tags you set can be viewed and searched in &lt;code class=&quot;language-text&quot;&gt;https://siteUrl/tags&lt;/code&gt;.&lt;/p&gt;
-&lt;h2&gt;5. Series&lt;/h2&gt;
-&lt;p&gt;&lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 677px; margin-bottom: 16px;&apos;&gt;
-      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/1ea4e56966cb5fb6e110d32124fd883c/d1584/series-example.jpg&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
-    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 17.058823529411764%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAADABQDASIAAhEBAxEB/8QAFwABAAMAAAAAAAAAAAAAAAAAAAECBf/EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhADEAAAAdqwSD//xAAVEAEBAAAAAAAAAAAAAAAAAAABEP/aAAgBAQABBQIv/8QAFBEBAAAAAAAAAAAAAAAAAAAAEP/aAAgBAwEBPwE//8QAFBEBAAAAAAAAAAAAAAAAAAAAEP/aAAgBAgEBPwE//8QAFBABAAAAAAAAAAAAAAAAAAAAEP/aAAgBAQAGPwJ//8QAFRABAQAAAAAAAAAAAAAAAAAAARD/2gAIAQEAAT8hF//aAAwDAQACAAMAAAAQ8A//xAAUEQEAAAAAAAAAAAAAAAAAAAAQ/9oACAEDAQE/ED//xAAUEQEAAAAAAAAAAAAAAAAAAAAQ/9oACAECAQE/ED//xAAYEAEAAwEAAAAAAAAAAAAAAAABABAhEf/aAAgBAQABPxAk0GGHCv/Z&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
-  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;series example&apos; title=&apos;&apos; src=&apos;/static/1ea4e56966cb5fb6e110d32124fd883c/d1584/series-example.jpg&apos; srcset=&apos;/static/1ea4e56966cb5fb6e110d32124fd883c/0b705/series-example.jpg 170w,
-/static/1ea4e56966cb5fb6e110d32124fd883c/31389/series-example.jpg 340w,
-/static/1ea4e56966cb5fb6e110d32124fd883c/d1584/series-example.jpg 677w&apos; sizes=&apos;(max-width: 677px) 100vw, 677px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
-  &lt;/a&gt;
-    &lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;You can publish multiple related documents in a series. The series set in Frontmatter is grouped together and shown at the top of the document. This can be useful for serialized documents with an order. Series documents are displayed in ascending order of creation date.&lt;/p&gt;
-&lt;p&gt;The current document is also set in a series called &lt;code class=&quot;language-text&quot;&gt;Getting started your blog with gatsby-starter-hoodie&lt;/code&gt;.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[🚀 2. Quick Start]]></title><description><![CDATA[Getting started your blog with gatsby-starter-hoodie by following steps below. It's very easy 😉. 1. Create a Gatsby site Make sure you have…]]></description><link>https://ms0828.github.io/quick-start/</link><guid isPermaLink="false">https://ms0828.github.io/quick-start/</guid><pubDate>Sun, 02 May 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Getting started your blog with gatsby-starter-hoodie by following steps below. It&apos;s very easy 😉.&lt;/p&gt;
-&lt;h2&gt;1. Create a Gatsby site&lt;/h2&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Make sure you have &lt;strong&gt;node.js&lt;/strong&gt; and &lt;strong&gt;gatsby-cli&lt;/strong&gt; installed on your computer.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;$ npx gatsby new my-hoodie-blog https://github.com/devHudi/gatsby-starter-hoodie&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2&gt;2. Start dev server&lt;/h2&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;$ cd my-hoodie-blog
-$ npm run start&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now you can access to your blog at localhost:8000.&lt;/p&gt;
-&lt;h2&gt;3. Create your own Github repository&lt;/h2&gt;
-&lt;p&gt;Utterance comment widget is based on &lt;strong&gt;Github issue system&lt;/strong&gt;. So you need your own GitHub repository. Also, if you want to publish your blog through Github Pages or Netlify, the Github Repository is a necessary.&lt;/p&gt;
-&lt;p&gt;If you don&apos;t know how to create a GitHub repository, follow the &lt;a href=&quot;https://docs.github.com/en/github/getting-started-with-github/create-a-repo&quot;&gt;official GitHub documentation&lt;/a&gt;.&lt;/p&gt;
-&lt;h3&gt;Add remote repository&lt;/h3&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;$ git init
-$ git remote add origin https://github.com/{YOUR_GITHUB_NAME}/{YOUR_REPOSITORY_NAME}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2&gt;4. Write blog-config.js&lt;/h2&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;module&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;exports &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;token literal-property property&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;MY BLOG&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;token literal-property property&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;Hello, This is my blog&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;token literal-property property&quot;&gt;author&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;YOUR NAME&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;token literal-property property&quot;&gt;siteUrl&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;https://myblog.com&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;token literal-property property&quot;&gt;links&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;token literal-property property&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;https://github.com&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;token literal-property property&quot;&gt;facebook&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;https://www.facebook.com&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;token literal-property property&quot;&gt;instagram&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;https://www.instagram.com&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;token literal-property property&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;https://www.google.com/&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;token literal-property property&quot;&gt;utterances&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;token literal-property property&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;{YOUR_GITHUB_NAME}/{YOUR_REPOSITORY_NAME}&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;token literal-property property&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;pathname&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;gatsby-starter-hoodie provides a configuration file called &lt;code class=&quot;language-text&quot;&gt;blog-config.js&lt;/code&gt;. In this file, you can configure blog, biography (profile), and utterance. The website settings you are currently viewing are as above.&lt;/p&gt;
-&lt;p&gt;Configure &lt;code class=&quot;language-text&quot;&gt;blog-config.js&lt;/code&gt; to suit your blog. However, it is recommended not to modify &lt;code class=&quot;language-text&quot;&gt;utterances.type&lt;/code&gt;.&lt;/p&gt;
-&lt;h3&gt;Change profile image&lt;/h3&gt;
-&lt;p&gt;Replace &lt;code class=&quot;language-text&quot;&gt;static/profile.png&lt;/code&gt; with the image you want. To change the image file name, you need to change the source code of &lt;code class=&quot;language-text&quot;&gt;src/components/Bio.jsx&lt;/code&gt;.&lt;/p&gt;
-&lt;h2&gt;5. Add your content&lt;/h2&gt;
-&lt;p&gt;Markdown content is in &lt;code class=&quot;language-text&quot;&gt;contents/posts&lt;/code&gt;. You can write and add your articles like the sample posts here. &lt;a href=&quot;/writing-guide&quot;&gt;Click here&lt;/a&gt; to see the detail writing guide.&lt;/p&gt;
-&lt;h2&gt;6. Deploy your blog&lt;/h2&gt;
-&lt;h3&gt;6-1 via Netlify&lt;/h3&gt;
-&lt;p&gt;Follow the Connecting to Netlify steps in &lt;a href=&quot;https://www.netlify.com/blog/2016/02/24/a-step-by-step-guide-gatsby-on-netlify/&quot;&gt;A Step-by-Step Guide: Gatsby on Netlify&lt;/a&gt;. It&apos;s not difficult.&lt;/p&gt;
-&lt;p&gt;If you connect the github repository using Netlify, it is automatically distributed whenever you push it, so it is convenient.&lt;/p&gt;
-&lt;h3&gt;6-2. via Github Pages&lt;/h3&gt;
-&lt;h4&gt;Case 1&lt;/h4&gt;
-&lt;p&gt;If the repository name is in the form of &lt;code class=&quot;language-text&quot;&gt;{YOUR_GITHUB_NAME} .github.io&lt;/code&gt;, run it below.&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;$ npm run deploy-gh&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h4&gt;Case 2&lt;/h4&gt;
-&lt;p&gt;If the repository name is not in the form of &lt;code class=&quot;language-text&quot;&gt;{YOUR_GITHUB_NAME} .github.io&lt;/code&gt;, run it below.&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;$ npm run deploy-gh-prefix-paths&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;In the above case, you need to change &lt;code class=&quot;language-text&quot;&gt;pathPrefix&lt;/code&gt; in &lt;code class=&quot;language-text&quot;&gt;gatsby-config.js&lt;/code&gt; to your repository name.&lt;/p&gt;
-&lt;h3&gt;6-3. other platforms&lt;/h3&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;$ npm run build&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;You can build the gatsby website with the command above. The build output is created in the &lt;code class=&quot;language-text&quot;&gt;/public&lt;/code&gt; directory. Deploy the &lt;code class=&quot;language-text&quot;&gt;/public&lt;/code&gt; directory using the command for the platform you want to deploy.&lt;/p&gt;
-&lt;h2&gt;7. Cutomize&lt;/h2&gt;
-&lt;h3&gt;Project Structure&lt;/h3&gt;
-&lt;p&gt;You can customize your own gatsby-starter-hoodie by referring to the following file structure 🙊.&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;├── node_modules
-├── contents
-│   └── posts // your articles are here
-├── public // build outputs are here
-└── src
-    ├── assets
-    │   └── theme // theme config is here
-    ├── components
-    │   └── Article
-    │       └── Body
-    │           └── StyledMarkdown
-    │               └── index.jsx // markdown styles are here
-    │   ...
-    ├── fonts // webfonts are here
-    ├── hooks
-    ├── images
-    ├── pages // page components are here
-    ├── reducers
-    ├── templates // post components are here
-    └── utils&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[🎇 1. About gatsby-starter-hoodie]]></title><description><![CDATA[About gatsby-starter-hoodie gatsby-starter-hoodie is a gatsby theme created for writing tech blogs. Markdown, Code Highlighting in various…]]></description><link>https://ms0828.github.io/about-hoodie/</link><guid isPermaLink="false">https://ms0828.github.io/about-hoodie/</guid><pubDate>Sat, 01 May 2021 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;About gatsby-starter-hoodie&lt;/h2&gt;
-&lt;p&gt;gatsby-starter-hoodie is a gatsby theme created for writing tech blogs. Markdown, Code Highlighting in various programming languages, and Katex syntax are supported. Also, you can easily categorize articles into tags and series.&lt;/p&gt;
-&lt;p&gt;Start your blog with a neatly designed gatsby-starter-hoodie that supports dark mode.&lt;/p&gt;
-&lt;h2&gt;Features&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Markdown&lt;/li&gt;
-&lt;li&gt;Code Highlighting&lt;/li&gt;
-&lt;li&gt;Katex Syntax&lt;/li&gt;
-&lt;li&gt;Dark Mode (Responsive to the settings of the OS)&lt;/li&gt;
-&lt;li&gt;Tag Categoriazation&lt;/li&gt;
-&lt;li&gt;Series Categorization&lt;/li&gt;
-&lt;li&gt;Responsive Web&lt;/li&gt;
-&lt;li&gt;SEO&lt;/li&gt;
-&lt;li&gt;Utterance (Comment widget)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Let&apos;s get started&lt;/h2&gt;
-&lt;p&gt;Follow the &lt;a href=&quot;/quick-start&quot;&gt;Quick Start&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[🤩 4. 그 외 팁들]]></title><description><![CDATA[파비콘은 어떻게 변경하나요?  에 파비콘 파일이 위치해 있습니다. 이미지 파일을 대체하면 파비콘을 변경할 수 있습니다. 만약 파비콘 파일의 이름을 변경하고 싶다면,  파일의  에서  속성을 변경하셔야합니다. Utterance…]]></description><link>https://ms0828.github.io/other-tips-kr/</link><guid isPermaLink="false">https://ms0828.github.io/other-tips-kr/</guid><pubDate>Sun, 04 Apr 2021 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;파비콘은 어떻게 변경하나요?&lt;/h2&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;em.createQuery(&quot;쿼리문&quot;, 객체명.class).getResultList();&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;출처: &lt;a href=&quot;https://www.inflearn.com/course/lecture?courseSlug=ORM-JPA-Basic&amp;#x26;unitId=21683&amp;#x26;tab=curriculum&amp;#x26;category=questionDetail&quot;&gt;https://www.inflearn.com/course/lecture?courseSlug=ORM-JPA-Basic&amp;#x26;unitId=21683&amp;#x26;tab=curriculum&amp;#x26;category=questionDetail&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[🤩 4. 그 외 팁들]]></title><description><![CDATA[파비콘은 어떻게 변경하나요?  에 파비콘 파일이 위치해 있습니다. 이미지 파일을 대체하면 파비콘을 변경할 수 있습니다. 만약 파비콘 파일의 이름을 변경하고 싶다면,  파일의  에서  속성을 변경하셔야합니다. Utterance…]]></description><link>https://ms0828.github.io/other-tips-kr/</link><guid isPermaLink="false">https://ms0828.github.io/other-tips-kr/</guid><pubDate>Sun, 04 Apr 2021 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;파비콘은 어떻게 변경하나요?&lt;/h2&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;static/favicon.png&lt;/code&gt; 에 파비콘 파일이 위치해 있습니다. 이미지 파일을 대체하면 파비콘을 변경할 수 있습니다.&lt;/p&gt;
 &lt;p&gt;만약 파비콘 파일의 이름을 변경하고 싶다면, &lt;code class=&quot;language-text&quot;&gt;gatsby-config.js&lt;/code&gt; 파일의 &lt;code class=&quot;language-text&quot;&gt;gatsby-plugin-manifest&lt;/code&gt; 에서 &lt;code class=&quot;language-text&quot;&gt;icon&lt;/code&gt; 속성을 변경하셔야합니다.&lt;/p&gt;
 &lt;h2&gt;Utterance 가 제대로 작동하지 않아요.&lt;/h2&gt;
