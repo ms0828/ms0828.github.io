@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of MuSeong]]></title><description><![CDATA[개인 공부 블로그]]></description><link>https://ms0828.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Fri, 15 Sep 2023 15:38:15 GMT</lastBuildDate><item><title><![CDATA[JPA 엔티티 매핑]]></title><description><![CDATA[객체와 테이블 매핑 본 블로그는 인프런 '김영한'님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of MuSeong]]></title><description><![CDATA[개인 공부 블로그]]></description><link>https://ms0828.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Fri, 15 Sep 2023 15:45:55 GMT</lastBuildDate><item><title><![CDATA[JPA 엔티티 매핑]]></title><description><![CDATA[객체와 테이블 매핑 본 블로그는 인프런 '김영한'님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
 출처  https://www.inflearn.com/course/ORM-JPA-Basic…]]></description><link>https://ms0828.github.io/jpa_엔티티매핑/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_엔티티매핑/</guid><pubDate>Thu, 14 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;객체와 테이블 매핑&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
@@ -132,94 +132,119 @@ private Long id;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;ul&gt;
 &lt;li&gt;JPA를 이용해서 데이터를 변경하는 작업 위에는 항상 Transaction 안에서 작업해야한다. (데이터베이스 커넥션으로 생각하면 된다.)
 &lt;br&gt;&lt;/li&gt;
+&lt;li&gt;데이터 변경 시, 엔티티 매니저가 반환하는 Transaction을 시작해야 함.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;EntityManager em = entityManagerFactory.createEntityManager();
+
+EntityTransaction tx = em.getTransaction();
+
+tx.begin();
+
+//데이터 작업 수행
+
+tx.commit();&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;2.영속성 컨텍스트&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;우리가 Entity를 DB에 저장할 때 entitymanager.persis(Entity) 로 저장하지만, 이는 사실 DB에 저장하는 것이 아니라 &apos;영속성 컨텍스트&apos;에 저장하는 것&lt;/li&gt;
+&lt;li&gt;EntityManager를 통해서 접근할 수 있다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;
+&lt;blockquote&gt;
+&lt;p&gt;그럼 DB에 저장은 언제?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Transaction이 Commit 하는 시점에 영속성 컨텍스트에 있는 데이터가 저장 된다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h3&gt;3. 엔티티의 생명주기&lt;/h3&gt;
+&lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;데이터 변경 시, 엔티티 매니저가 반환하는 Transaction을 시작해야 함.&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;EntityManager em = entityManagerFactory.createEntityManager();&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;비영속
+&lt;br&gt;영속성 컨텍스트와 상관없는 새로운 상태&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ex) 객체가 생성된 상태
+&lt;br&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;영속
+&lt;br&gt;영속성 컨텍스트에 관리되는 상태&lt;br&gt; &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ex) entityManager.persist()로 객체를 영속성 컨텍스트에 등록한 상태
+&lt;br&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;준영속
+&lt;br&gt;영속성 컨텍스트에 저장되었다가 분리된 상태&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ex) entityManager.detach(객체)
+&lt;br&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;삭제
+&lt;br&gt;객체가 삭제된 상태&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;entityManager.remove(객체)&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;EntityTransaction tx = em.getTransaction();&lt;/p&gt;
-&lt;p&gt;tx.begin();&lt;/p&gt;
-&lt;p&gt;//데이터 작업 수행&lt;/p&gt;
-&lt;p&gt;tx.commit();&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;### 2.영속성 컨텍스트
-* 우리가 Entity를 DB에 저장할 때 entitymanager.persis(Entity) 로 저장하지만, 이는 사실 DB에 저장하는 것이 아니라 &apos;영속성 컨텍스트&apos;에 저장하는 것
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;h2&gt;영속성 컨텍스트는 왜 존재하는가?&lt;/h2&gt;
+&lt;br&gt;
+&lt;p&gt;&lt;strong&gt;1. 1차 캐시&lt;br&gt;&lt;br&gt;&lt;/strong&gt;
+&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 388px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/76f744427dd9f30d21c467e812cd3b66/5bbd5/image.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 64.70588235294117%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAYAAACpUE5eAAAACXBIWXMAABJ0AAASdAHeZh94AAABAklEQVR42p2S2aqEMBBE/f/f8gfEB0Ef3Pd9X1DsoRoyDEEu5j4c0kmsspdoVVWRTNM05LoumabJ2LZNlmUxiKMoorqu6UmrbdtGMsdxsCAMQxYDxEEQkOd51HUd7ftOT1ptWRaSmef5awwgBiLGN9M08Xey9tFQmMqIu3Vdv7w2/EWIh2HgctFjrNjLxq8Mx3FkkziOqSxLHk6WZdxbnKN8JcOiKKhtWzIMg2NkhyHpuk5pmvJ0XxuinDzPebp4ShDjBfi+T47jsDHuRdmvMoTJb5+QLUpNkoRj/ECpZAjO86Truvg59X1P930zOFM2hIEA/UNWWMUe67+ezV8oGarwAaM84kL2VlZ2AAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;Alt text&apos; title=&apos;&apos; src=&apos;/static/76f744427dd9f30d21c467e812cd3b66/5bbd5/image.png&apos; srcset=&apos;/static/76f744427dd9f30d21c467e812cd3b66/e7570/image.png 170w,
+/static/76f744427dd9f30d21c467e812cd3b66/f46e7/image.png 340w,
+/static/76f744427dd9f30d21c467e812cd3b66/5bbd5/image.png 388w&apos; sizes=&apos;(max-width: 388px) 100vw, 388px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;Alt text&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;매번 DB에 접근하지 않고 1차 캐시를 이용하여 접근 속도 및 성능 향상&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;p&gt;&lt;strong&gt;2. 동일성 보장&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;Entity a = entityManager.find(Entity.class, &quot;key1&quot;);
+Entity b = entityManager.find(Entity.class, &quot;key1&quot;);
 
-* EntityManager를 통해서 접근할 수 있다.
-
-&amp;lt;br&gt;
-
-&gt; 그럼 DB에 저장은 언제?
-&gt; * Transaction이 Commit 하는 시점에 영속성 컨텍스트에 있는 데이터가 저장 된다.
---- 
-
-
-
-### 3. 엔티티의 생명주기
-* 비영속 
-&amp;lt;br&gt;영속성 컨텍스트와 상관없는 새로운 상태&amp;lt;br&gt;
- &gt; ex) 객체가 생성된 상태
-&amp;lt;br&gt;
-
-* 영속
-&amp;lt;br&gt;영속성 컨텍스트에 관리되는 상태&amp;lt;br&gt; 
-&gt; ex) entityManager.persist()로 객체를 영속성 컨텍스트에 등록한 상태
-&amp;lt;br&gt;
-
-* 준영속
-&amp;lt;br&gt;영속성 컨텍스트에 저장되었다가 분리된 상태
-&gt; ex) entityManager.detach(객체)
-&amp;lt;br&gt;
-
-* 삭제
-&amp;lt;br&gt;객체가 삭제된 상태
-&gt; entityManager.remove(객체)
-
-&amp;lt;br&gt;
-&amp;lt;br&gt;
-&amp;lt;br&gt;
-
-
-
-## 영속성 컨텍스트는 왜 존재하는가?
-
-&amp;lt;br&gt;
-
-**1. 1차 캐시&amp;lt;br&gt;&amp;lt;br&gt;**
-![Alt text](image.png)
-&gt; 매번 DB에 접근하지 않고 1차 캐시를 이용하여 접근 속도 및 성능 향상
-
-&amp;lt;br&gt;
-
-**2. 동일성 보장**&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Entity a = entityManager.find(Entity.class, &quot;key1&quot;);
-Entity b = entityManager.find(Entity.class, &quot;key1&quot;);&lt;/p&gt;
-&lt;p&gt;System.out.println(a == b); //동일성 보장&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;&gt; 같은 Transaction에서 Entity를 접근할 때, 객체들의 동일성을 보장한다.
-
-&amp;lt;br&gt;
-
-**3. 트랜잭션을 지원하는 쓰기 지연**
-&gt; 데이터 변경 시 즉시 SQL이 실행되는 것이 아니라 &quot;쓰기 지연 SQL 저장소&quot;에 변경 내역에 관한 SQL문을 저장해뒀다가, Transaction 커밋 시점에 SQL을 실행한다.
-&gt; * 최적화 측면에서의 이점
-
-&amp;lt;br&gt;
-
-**4. 변경 감지(Dirty Checking)**
-&gt; 데이터 변경 시, update를 따로 실행하지 않아도, 영속성 컨텍스트에서 데이터 변경 내역을 추적한다. 그리고 커밋 시점에 변경 내역을 자동으로 처리한다. (3번 내용과 유사)
-
-**5. 지연 로딩(Lazy Loading)**
-
-&amp;lt;br&gt;
-&amp;lt;br&gt;
-&amp;lt;br&gt;
-
-## 플러시
-&gt; Transaction을 커밋할 때, 실질적으로 변경 내역에 대해 모아뒀던 SQL을 실질적으로 실행하는 기능  
-
-* 플러시 실행 시, 영속성 컨텍스트를 비우지 않는다.
-* Transaction 작업 단위에서 실행된다.
-
-&amp;lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[JPA Start]]></title><description><![CDATA[JPA란? (Jpava Persistence API) 본 블로그는 인프런 '김영한'님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+System.out.println(a == b); //동일성 보장&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;같은 Transaction에서 Entity를 접근할 때, 객체들의 동일성을 보장한다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;p&gt;&lt;strong&gt;3. 트랜잭션을 지원하는 쓰기 지연&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;데이터 변경 시 즉시 SQL이 실행되는 것이 아니라 &quot;쓰기 지연 SQL 저장소&quot;에 변경 내역에 관한 SQL문을 저장해뒀다가, Transaction 커밋 시점에 SQL을 실행한다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;최적화 측면에서의 이점&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;p&gt;&lt;strong&gt;4. 변경 감지(Dirty Checking)&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;데이터 변경 시, update를 따로 실행하지 않아도, 영속성 컨텍스트에서 데이터 변경 내역을 추적한다. 그리고 커밋 시점에 변경 내역을 자동으로 처리한다. (3번 내용과 유사)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;5. 지연 로딩(Lazy Loading)&lt;/strong&gt;&lt;/p&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;h2&gt;플러시&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Transaction을 커밋할 때, 실질적으로 변경 내역에 대해 모아뒀던 SQL을 실질적으로 실행하는 기능  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;플러시 실행 시, 영속성 컨텍스트를 비우지 않는다.&lt;/li&gt;
+&lt;li&gt;Transaction 작업 단위에서 실행된다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;</content:encoded></item><item><title><![CDATA[JPA Start]]></title><description><![CDATA[JPA란? (Jpava Persistence API) 본 블로그는 인프런 '김영한'님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
 출처  https://www.inflearn.com…]]></description><link>https://ms0828.github.io/jpa_시작/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_시작/</guid><pubDate>Wed, 13 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;JPA란? (Jpava Persistence API)&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
