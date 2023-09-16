@@ -1,4 +1,310 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of MuSeong]]></title><description><![CDATA[개인 공부 블로그]]></description><link>https://ms0828.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Fri, 15 Sep 2023 15:51:28 GMT</lastBuildDate><item><title><![CDATA[JPA 엔티티 매핑]]></title><description><![CDATA[객체와 테이블 매핑 본 블로그는 인프런 '김영한'님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of MuSeong]]></title><description><![CDATA[개인 공부 블로그]]></description><link>https://ms0828.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Sat, 16 Sep 2023 19:57:28 GMT</lastBuildDate><item><title><![CDATA[JPA 연관관계 매핑 2]]></title><description><![CDATA[다양한 연관관계 본 블로그는 인프런 '김영한'님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+출처  https://www.inflearn.com/course/ORM-JPA-Basic…]]></description><link>https://ms0828.github.io/jpa_연관관계 매핑2/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_연관관계 매핑2/</guid><pubDate>Sun, 17 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;다양한 연관관계&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+&lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/ORM-JPA-Basic&quot;&gt;https://www.inflearn.com/course/ORM-JPA-Basic&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;ul&gt;
+&lt;li&gt;이 포스팅은 앞에 &quot;연관관계 매핑 1&quot; 포스팅 시나리오를 기반으로 요약한 글
+&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;연관관계 매핑시 고려사항&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;다중성 (다대일, 일대다)&lt;/li&gt;
+&lt;li&gt;단방향, 양방향&lt;/li&gt;
+&lt;li&gt;연관관계 주인
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;다대일 [N:1]&lt;/h2&gt;
+&lt;p&gt;@ManyToOne&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&apos;다&apos; 쪽에 연관관계 주인을 잡으면 편리하다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;다대일, 일대다 연관관계 매핑의 경우, DB 설계상 &apos;다&apos; 쪽에 Foregin Key가 있어야 하기 때문&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;관계형 DB에서 다대일 관계에서는 &apos;다&apos;쪽의 테이블에 외래 키가 있다. &lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;h3&gt;단방향&lt;/h3&gt;
+&lt;p&gt;관계형 DB에 Foregin Key가 있는 테이블과 매핑된 객체의 참조 필드에 @ManyToOne, @JoinColumn을 사용
+&lt;br&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;@Entity
+public class Member{
+
+  //...
+
+  @ManyToOne    //다대일 관계
+  @JoinColumn(name = &quot;TEAM_ID&quot;) //현재 매핑된 테이블의 Foregin Key를 관리하는 Column 이름을 지정
+  private Team team;
+
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;br&gt;
+&lt;h3&gt;양방향&lt;/h3&gt;
+&lt;p&gt;참조 되는 객체 필드에 반대편 객체의 참조 필드를 추가한다.
+&lt;br&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;@Entity
+public class Team{    
+
+  //...
+
+  //매핑되는 Team 입장에서는 일대다 관계
+  //mappedBy 속성을 사용해 Member의 &quot;team&quot; 필드에 의해 매핑되었다고 설정
+  @OneToMany(mappedBy = &quot;team&quot;)
+  List&amp;lt;Member&gt; members = new ArrayList&amp;lt;&gt;();
+
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;br&gt;
+&lt;h2&gt;일대다 [1:N]&lt;/h2&gt;
+&lt;p&gt;@OneToMany&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&apos;일&apos;쪽의 객체가 Foregin Key에 대한 객체 참조를 관리한다고 하면?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;테이블 관계에서는 일대다 관계가 항상 &apos;다&apos; 쪽에 외래 키가 있을 수 밖에 없다. &lt;br&gt;&lt;/p&gt;
+&lt;p&gt;이러한 차이 때문에 객체가 반대편 테이블의 외래 키를 관리하게 되는 구조&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;권장되지 않는 연관관계 방식 (차라리 다대일 양방향 매핑을 사용하자)&lt;br&gt; 일대다 양방향은 공식적으로 존재하지 않음&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 476px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/37fbc613ffbe7c95c58be86cc68f4b23/09261/image.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 52.352941176470594%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAACXBIWXMAABJ0AAASdAHeZh94AAABbElEQVR42oVS2YrCQBD0/z/FV1HQhzx6RFHwQKOJGjXeB2rwjNZSBTO4sLgNTZhMd3VV16TwJd7vN1arFbbbLTabDQ6Hg/59i9TnIUkSPJ9PfR+PB16vl4CWyyXa7TY8z8P9fleNqTNnC2gmXq9XrNdrNTWbTbEiEBtOpxN839fdYDDAfr9Hq9VCuVxWz263s6AWMI5jFRGE4MfjURIZZMpkRFGEer2OXq+H8XgssOl0KkUCJO3L5SLAUqmkLBaLajqfz3YVTA5n7Xw+x2w2s3ulAkNMDDm13+8jDEN0u13L7D8D/jSFTZTHadwbwReLhRiTIdmYnEwmcp2MWMOkZJ4NS7tDSgmCAK7rolAoiDF3MxwO9Z/sOYznTqeDXC6HTCaDSqWiO5Lini3g7XaD4zhKymYTC+keneYaaBaNS6fTyGazyOfzcn40GsnMX++Q6HwClMRnQSnGOXPP4GpqtRqq1SoajYbqKd08mx/KYfO2u7W57gAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;일대다 단방향&apos; title=&apos;&apos; src=&apos;/static/37fbc613ffbe7c95c58be86cc68f4b23/09261/image.png&apos; srcset=&apos;/static/37fbc613ffbe7c95c58be86cc68f4b23/e7570/image.png 170w,
+/static/37fbc613ffbe7c95c58be86cc68f4b23/f46e7/image.png 340w,
+/static/37fbc613ffbe7c95c58be86cc68f4b23/09261/image.png 476w&apos; sizes=&apos;(max-width: 476px) 100vw, 476px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;일대다 단방향&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Team 객체에서 Member를 추가하면, DB에서는 Member(FK를 갖고 있는)테이블에 Update Query가 실행됨&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;blockquote&gt;
+&lt;p&gt;JoinColumn 을 사용하지 않으면, Join 테이블 방식을 사용하기 때문에이 Join 테이블이 하나 더 생성된다. &lt;br&gt; 특수한 경우가 아니라면, JoinColumn을 사용하자.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h2&gt;일대일 [1:1]&lt;/h2&gt;
+&lt;p&gt;@OneToOne
+&lt;br&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;참조하는 테이블이나 참조되는 테이블 모두 둘 중 하나로 외래 키 선택&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;다대일 관계에서 외래 키에 데이터베이스 유니크 제약조건 추가&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;유니크 제약조건으로 테이블의 1:1 관계가 성립이 된다. &lt;br&gt; 만약 유니크 제약조건 없이 설계하면, Application 개발에서 제약을 따로 관리하며 개발해야함&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;양방향일 경우, 외래 키를 가지고 있는 쪽이 연관관계 주인, 반대편은 mappedBy 적용&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;일대일 단방향 관계에서 일대다 처럼 참조하는 객체가 Feregin Key에 대한 참조를 가지고, 참조되는 객체에 대한 테이블에서 Foreign Key를 가지는 것은 지원하지 않는다. &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;만약, 주 객체가 대상 객체를 참조하는 방향이지만, 대상 객체 테이블에 Foreign Key를 가지게 설계하려면 양방향 관계로 설계해야함&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;
+&lt;h2&gt;다대다 [N:N]&lt;/h2&gt;
+&lt;p&gt;@ManyToMany
+@JoinTable(name = &quot;연결 테이블 이름&quot;, joinColumns = ~, inverseJoinColumns = ~)
+&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;위 어노테이션을 적으면 Jpa가 연결 테이블을 추가해서 일대다, 다대일 관계로 DB를 설정해준다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;객체는 List와 같은 컬렉션으로 다대다 관계가 구현 가능하나, 관계형 DB는 테이블 2개로 다대다 관계를 표현할 수 없기 때문에 연결 테이블이 생성된다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h3&gt;다대다 매핑의 문제점&lt;/h3&gt;
+&lt;p&gt;위 어노테이션으로 Jpa가 연결 테이블을 생성하여 매핑은 해주지만, 연결 테이블에 매핑 정보 외에 추가적인 데이터가 들어올 수 없다. &lt;br&gt; --&gt; 다대다 관계는 실무에서 잘 사용되지 않는다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;이를 해결하려면, 연결 테이블용 Entity를 따로 추가해서 객체 레벨에서 일대다, 다대일 관계로 풀어내야 한다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;</content:encoded></item><item><title><![CDATA[JPA 연관관계 매핑 1]]></title><description><![CDATA[연관관계 매핑 본 블로그는 인프런 '김영한'님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+출처  https://www.inflearn.com/course/ORM-JPA-Basic…]]></description><link>https://ms0828.github.io/jpa_연관관계 매핑/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_연관관계 매핑/</guid><pubDate>Sat, 16 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;연관관계 매핑&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+&lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/ORM-JPA-Basic&quot;&gt;https://www.inflearn.com/course/ORM-JPA-Basic&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;h3&gt;요약을 위한 예제&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Member와 Team이 있다.&lt;/li&gt;
+&lt;li&gt;Member는 하나의 Team에만 소속될 수 있다.&lt;/li&gt;
+&lt;li&gt;Member와 Team은 다대일 단방향 관계이다. (하나의 Team에 다수의 Member가 소속된다.)
+&lt;br&gt;
+&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;시리즈 앞 부분에서 요약한대로, FK(Foreign Key)를 테이블에 저장하고 EntityManager.find를 연달아 이용하여 참조된 객체를 찾을 수 있다.&lt;br&gt;
+그러나 이는 객체 지향적인 방법은 아니다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;객체가 객체를 참조하는 방법으로 연관관계를 매핑하는 방법을 알아보자.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 652px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/1c64ea6a0b17ed2977756321ff7a702a/43b96/image.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 46.470588235294116%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAYAAAAywQxIAAAACXBIWXMAABJ0AAASdAHeZh94AAABRUlEQVR42n2S2Y6CUBBE/f8vAmPiI08YRYgr0bALKrjhCjVTnVwiOplOOpdcmtNd1XTwG3VdN/kZ1+sVSZIgjmN4nofj8Yj/oqOAjNPphO12i+l0itlshjRNkWUZiqJAnufY7XbyzJowDKWOd+fzuQ18PB4CWy6XWCwWcBwHq9UK9/sdm81GpmQNoZxwPp8jCAJEUYTL5SLQFpCS2MX3fQwGA4zH4wb0XqyCdWy43++l7mtC+sPJXNfFcDiUScuyxOFwkAkIvt1ucvL+L6+/gJPJRLrSu9FoJN1fr5dA1+u1qFAyCWcjeklbns9nG8ixq6qSj2zbRrfbha7rAqb5ymcmQWxqmiZ6vZ4shotTyxUgN8dfwjAMaJqGfr8vz/SP8nlyGZTMtCxL3vMbpvK5ASpPKJNeMilT/TKfQcn0ktNyIe+SfwBDtaoq/qOfmAAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;&amp;quot;객체 지향 모델링&amp;quot;&apos; title=&apos;&apos; src=&apos;/static/1c64ea6a0b17ed2977756321ff7a702a/43b96/image.png&apos; srcset=&apos;/static/1c64ea6a0b17ed2977756321ff7a702a/e7570/image.png 170w,
+/static/1c64ea6a0b17ed2977756321ff7a702a/f46e7/image.png 340w,
+/static/1c64ea6a0b17ed2977756321ff7a702a/43b96/image.png 652w&apos; sizes=&apos;(max-width: 652px) 100vw, 652px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;&amp;quot;객체 지향 모델링&amp;quot;&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;@Entity
+public class Member{
+
+  @Id @GeneratedValue
+  private Long id;
+
+  @Column(name = &quot;USERNAME&quot;)
+  private String name;
+
+  //@Column(name = &quot;TEAM_ID&quot;)
+  //private Long teamId;       //이 방법은 FK로 연관관계를 직접 매핑하는 방법
+
+  @ManyToOne    //다대일 관계
+  @JoinColumn(name = &quot;TEAM_ID&quot;)
+  private Team team;
+
+}
+
+
+  //  ...   실행 가능한 메인 클래스라고 가정 (초기화 코드 및 Team 클래스 생성 과정 생략)
+
+  //팀 저장
+  Team team = new Team();
+  team.setName(&quot;TeamA&quot;);
+  entityManager.persist(team);
+
+  //회원 저장
+  Member member = new Member();
+  member.setName(&quot;member1);
+  member.setTeam(team);   //단방향 연관관계 설정, 참조 저장
+  entityManager.persist(member);&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;br&gt;
+위와 같은 방식으로 참조를 통해 연관관계를 조회할 수 있다.
+&lt;hr&gt;
+&lt;h2&gt;객체와 테이블의 관계 구성의 차이&lt;/h2&gt;
+&lt;p&gt;양방향 연관관계를 정리하기 전에, 객체와 테이블의 연관관계 구성의 차이를 알아야한다. &lt;br&gt;&lt;/p&gt;
+&lt;p&gt;위 예제가 양방향 연관관계라고 가정하면, Member에서 Team으로의 연관관계 1개와 Team에서 Member으로의 연관관계 1개가 있어서 객체 레벨에서 보면 연관관계가 2개가 나온다.&lt;br&gt;
+&lt;br&gt;
+그러나 실제 DB에 저장되는 테이블을 살펴보면 연관관계는 1개로 충분하다. Foreign Key 하나로 두 테이블의 연관관계를 관리하기 때문이다. (양쪽으로 Join 가능)&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;양방향이라는 것은 객체 레벨에서 참조되는 객체의 필드에 대상 객체의 참조를 추가하는 것 뿐이다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;양방향 연관관계&lt;/h2&gt;
+&lt;p&gt;양방향 연관관계를 사용하여, 객체 Team에서 Member를 찾을 수 있게 만드려면? &lt;br&gt;&lt;/p&gt;
+&lt;br&gt;
+&lt;ul&gt;
+&lt;li&gt;Team에 member List 필드를 갖게 한다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 591px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/5d1e63566a5f0b1e7a70905802c914d7/c1f10/image-1.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 59.411764705882355%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAYAAABiDJ37AAAACXBIWXMAABJ0AAASdAHeZh94AAABsUlEQVR42n2TV6sqQRCE9///GcEHEQyoKCYUwQdzzjnnUJevL7ssh8NpaHZmtru6uqbHkc++3685tt/vNRqNtFqtNJvNzFkvl0tNp1O9328vx2/O6/XS4/HQ8/kU68/nY8Hj8VitVkvz+dzAJpOJOefD4VDX69Xy3Hh37RBwOBxUKBQUDocVjUYtab1eq9FoGNPT6aTz+Wxx7NvttrHsdrsKBoMWR+HFYiGnXq/bDwCoTEtUJxlmMMdp7Xg8GiCJ5FEEp7PL5fIfsNPpKJvNqlqtKp/PGxuMIIr4dXK/2+1WxWLRmMEUrQHj3On1eiqXy6pUKgbKHqcQLH8D5DydTiuXyymZTCoWixmp3W4nR38YYt9uNxP8fr97/pcZIAnoRrvoxBfdGJNms2lsB4OBaQ174ilELBqyRiIPEPG52Xg8brdGO+jCBbmtwtb1fr9v4ExFIpEwHdHPA0TcUChkeqALesCsVqtps9kYE9jCBvEZsUAgoEwmY2suiP8eIG1EIhGlUimrSAGSGSM0o32G1jXYlUolm0fmj+4YJw+QDa8A6u5QI4M7Qv7n9XPtf64A/gMAp4SObzIrIQAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;&amp;quot;양방향 매핑&amp;quot;&apos; title=&apos;&apos; src=&apos;/static/5d1e63566a5f0b1e7a70905802c914d7/c1f10/image-1.png&apos; srcset=&apos;/static/5d1e63566a5f0b1e7a70905802c914d7/e7570/image-1.png 170w,
+/static/5d1e63566a5f0b1e7a70905802c914d7/f46e7/image-1.png 340w,
+/static/5d1e63566a5f0b1e7a70905802c914d7/c1f10/image-1.png 591w&apos; sizes=&apos;(max-width: 591px) 100vw, 591px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;&amp;quot;양방향 매핑&amp;quot;&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;//위에서 생략한 Team 클래스
+@Entity
+public class Team{    
+
+  @Id @GeneratedValue
+  private Long id;
+
+  private String name;
+
+
+  //매핑되는 Team 입장에서는 일대다 관계
+  //mappedBy 속성을 사용해 Member의 &quot;team&quot; 필드에 의해 매핑되었다고 설정
+  @OneToMany(mappedBy = &quot;team&quot;)
+  List&amp;lt;Member&gt; members = new ArrayList&amp;lt;&gt;();
+
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;연관관계 주인&lt;/h2&gt;
+&lt;p&gt;양방향 관계에서는 &lt;strong&gt;연관관계 주인&lt;/strong&gt;이라는 개념이 중요하다.&lt;br&gt;
+&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;만약 객체 둘 중 하나에 변동사항이 생기면, 테이블 안에서 연관관계를 관리하는 FK를 누구 기준으로 업데이트 해야하나???&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;ul&gt;
+&lt;li&gt;객체 둘 중 &lt;strong&gt;하나&lt;/strong&gt;가 외래 키를 관리해야 한다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;주인이 아닌쪽은 참조 필드를 수정할 수 없음, 주인의 참조 필드만이 테이블의 FK를 업데이트 가능&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+따라서 객체의 양방향 연관관계는 연관관계의 주인을 설정해줘야 한다.
+&lt;br&gt;
+&lt;br&gt;
+&lt;p&gt;&lt;strong&gt;Tip : 연관관계 주인은 테이블에 FK를 가지고 있는 곳으로 지정하는 것이 좋다.&lt;/strong&gt; &lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;반대로 연관관계 주인을 설정할 경우, 객체의 변동사항에 대해 반대편 테이블에서 Update Query가 나가는 것을 볼 수 있다. 이것이 나중에 유지보수를 헷갈리게 한다.  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;hr&gt;
+&lt;h2&gt;양방향 매핑 규칙&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;객체의 두 관계중 하나를 연관관계의 주인으로 설정&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;연관관계의 주인이 외래 키를 관리(등록, 수정)&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;주인이 아닌쪽은 읽기만 가능&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;주인은 mappedBy 사용 X&lt;/li&gt;
+&lt;li&gt;주인이 아니면 mappedBy로 주인 지정&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h3&gt;양방향 매핑 시 주의점&lt;/h3&gt;
+&lt;p&gt;연관관계의 주인에게 참조 값(연관관계 대상)을 반드시 입력(초기화)해야 한다.&lt;br&gt; 포스트를 위한 시나리오에서 Team의 Member 리스트 필드에 member를 추가해봤자, 실제 테이블에 아무런 영향이 없다. &lt;br&gt;(실제 DB에서 Team 테이블에 Member를 유지하지 않기 때문)&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Tip : 객체지향적으로 개발을 할 때는, 양쪽에 다 값을 지정하자.&lt;br&gt; &lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;중간에 1차 캐시를 업데이트 하는 코드를 명시적으로 넣지 않은 상태에서 객체(주인X)의 변동이 있으면, 1차 캐시에서 그대로 가져오기 때문에 업데이트 되지 않은 기존의 값을 불러올 위험이 있다.&lt;br&gt;
+DB에서 조회하는 것이 아닌, 1차 캐시에서 불러오는 순수 객체 상태를 고려하려면, 양쪽에 값을 설정하는 습관을 들이는 것이 좋다. (개발 단계에서 에러방지를 위해서)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;team.getMembers().add(Member);
+
+//Update Query와 1차 캐시 초기화 주석처리
+//em.flush();  
+//em.clear();   
+//  위 3줄이 주석이 안되어 있으면, DB에서 새롭게 조회 했을 것이다. (이 경우 업데이트가 되지 않았다.)
+
+
+Team findTeam = em.find(Team.class, team.getId()); 
+List&amp;lt;Member&gt; members = findTeam.getMembers();
+
+for(Member m : members){
+  System.out.println(&quot;m = &quot; + m.getName());
+}     //값이 나오지 않음&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;br&gt;
+&lt;h4&gt;정리&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;테이블은 Foregin Key 하나로 양쪽 Join이 가능해서, 방향이라는 개념이 없다.&lt;/li&gt;
+&lt;li&gt;객체는 참조용 필드가 있는 쪽으로만 참조 가능하다. 한쪽만 참조하면 단방향, 양쪽으로 참조하면 양방향이다.&lt;/li&gt;
+&lt;li&gt;연관관계의 주인은 외래 키를 관리하는 테이블과 매핑된 객체의 참조이다.&lt;/li&gt;
+&lt;li&gt;참조되는 객체의 참조 변동사항은 DB 테이블에 영향을 주지 않는다. &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Tip&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;우선 단방향으로 모두 설계하고, 나중에 필요할 때 객체에서의 양방향 관계만 추가하면 된다. (추가해도 테이블에는 영향을 미치지 않는다.)&lt;/li&gt;
+&lt;li&gt;외래 키를 갖고 있는 객체를 기준으로 연관관계 주인을 설정한다.&lt;/li&gt;
+&lt;/ul&gt;</content:encoded></item><item><title><![CDATA[JPA 엔티티 매핑]]></title><description><![CDATA[객체와 테이블 매핑 본 블로그는 인프런 '김영한'님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
 출처  https://www.inflearn.com/course/ORM-JPA-Basic…]]></description><link>https://ms0828.github.io/jpa_엔티티매핑/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_엔티티매핑/</guid><pubDate>Thu, 14 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;객체와 테이블 매핑&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
@@ -370,8 +676,7 @@ System.out.println(a == b); //동일성 보장&lt;/code&gt;&lt;/pre&gt;&lt;/div&
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h5&gt;사용 예제&lt;/h5&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;em.createQuery(&quot;쿼리문&quot;, 객체명.class).getResultList();&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;출처: &lt;a href=&quot;https://www.inflearn.com/course/lecture?courseSlug=ORM-JPA-Basic&amp;#x26;unitId=21683&amp;#x26;tab=curriculum&amp;#x26;category=questionDetail&quot;&gt;https://www.inflearn.com/course/lecture?courseSlug=ORM-JPA-Basic&amp;#x26;unitId=21683&amp;#x26;tab=curriculum&amp;#x26;category=questionDetail&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[🤩 4. 그 외 팁들]]></title><description><![CDATA[파비콘은 어떻게 변경하나요?  에 파비콘 파일이 위치해 있습니다. 이미지 파일을 대체하면 파비콘을 변경할 수 있습니다. 만약 파비콘 파일의 이름을 변경하고 싶다면,  파일의  에서  속성을 변경하셔야합니다. Utterance…]]></description><link>https://ms0828.github.io/other-tips-kr/</link><guid isPermaLink="false">https://ms0828.github.io/other-tips-kr/</guid><pubDate>Sun, 04 Apr 2021 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;파비콘은 어떻게 변경하나요?&lt;/h2&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;em.createQuery(&quot;쿼리문&quot;, 객체명.class).getResultList();&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[🤩 4. 그 외 팁들]]></title><description><![CDATA[파비콘은 어떻게 변경하나요?  에 파비콘 파일이 위치해 있습니다. 이미지 파일을 대체하면 파비콘을 변경할 수 있습니다. 만약 파비콘 파일의 이름을 변경하고 싶다면,  파일의  에서  속성을 변경하셔야합니다. Utterance…]]></description><link>https://ms0828.github.io/other-tips-kr/</link><guid isPermaLink="false">https://ms0828.github.io/other-tips-kr/</guid><pubDate>Sun, 04 Apr 2021 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;파비콘은 어떻게 변경하나요?&lt;/h2&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;static/favicon.png&lt;/code&gt; 에 파비콘 파일이 위치해 있습니다. 이미지 파일을 대체하면 파비콘을 변경할 수 있습니다.&lt;/p&gt;
 &lt;p&gt;만약 파비콘 파일의 이름을 변경하고 싶다면, &lt;code class=&quot;language-text&quot;&gt;gatsby-config.js&lt;/code&gt; 파일의 &lt;code class=&quot;language-text&quot;&gt;gatsby-plugin-manifest&lt;/code&gt; 에서 &lt;code class=&quot;language-text&quot;&gt;icon&lt;/code&gt; 속성을 변경하셔야합니다.&lt;/p&gt;
 &lt;h2&gt;Utterance 가 제대로 작동하지 않아요.&lt;/h2&gt;
@@ -530,20 +835,4 @@ $ npm run start&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
     ├── pages // page components are here
     ├── reducers
     ├── templates // post components are here
-    └── utils&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[🎇 1. gatsby-starter-hoodie 에 대하여]]></title><description><![CDATA[gatsby-starter-hoodie 에 대하여 gatsby-starter-hoodie 는 기술 블로그를 작성하기 위해 개발된 Gatsby 테마입니다. 마크다운과 많은 프로그래밍 언어의 코드 하이라이팅, 그리고 Katex…]]></description><link>https://ms0828.github.io/about-hoodie-kr/</link><guid isPermaLink="false">https://ms0828.github.io/about-hoodie-kr/</guid><pubDate>Thu, 01 Apr 2021 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;gatsby-starter-hoodie 에 대하여&lt;/h2&gt;
-&lt;p&gt;gatsby-starter-hoodie 는 기술 블로그를 작성하기 위해 개발된 Gatsby 테마입니다. 마크다운과 많은 프로그래밍 언어의 코드 하이라이팅, 그리고 Katex 문법을 지원합니다. 또한 태그와 시리즈를 통하여 쉽게 게시물을 분류할 수 있습니다.&lt;/p&gt;
-&lt;p&gt;다크모드를 지원하는 깔끔한 디자인의 gatsby-starter-hoodie 로 여러분의 블로그를 시작하세요.&lt;/p&gt;
-&lt;h2&gt;주요 기능&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;마크다운&lt;/li&gt;
-&lt;li&gt;코드 하이라이팅&lt;/li&gt;
-&lt;li&gt;Katex 문법&lt;/li&gt;
-&lt;li&gt;다크모드 (OS 환경설정과 연동)&lt;/li&gt;
-&lt;li&gt;태그 분류&lt;/li&gt;
-&lt;li&gt;시리즈 분류&lt;/li&gt;
-&lt;li&gt;반응형 웹&lt;/li&gt;
-&lt;li&gt;SEO&lt;/li&gt;
-&lt;li&gt;Utterance (댓글 위젯)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;시작&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;/quick-start-kr&quot;&gt;빠르게 시작하기&lt;/a&gt; 문서에서 블로그를 세팅하세요.&lt;/p&gt;</content:encoded></item></channel></rss>
+    └── utils&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item></channel></rss>
