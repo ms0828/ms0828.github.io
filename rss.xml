@@ -1,10 +1,1140 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of MuSeong]]></title><description><![CDATA[개인 공부 블로그]]></description><link>https://ms0828.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Sat, 16 Sep 2023 19:57:28 GMT</lastBuildDate><item><title><![CDATA[JPA 연관관계 매핑 2]]></title><description><![CDATA[다양한 연관관계 본 블로그는 인프런 '김영한'님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
-출처  https://www.inflearn.com/course/ORM-JPA-Basic…]]></description><link>https://ms0828.github.io/jpa_연관관계 매핑2/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_연관관계 매핑2/</guid><pubDate>Sun, 17 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;다양한 연관관계&lt;/h1&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of MuSeong]]></title><description><![CDATA[개인 공부 블로그]]></description><link>https://ms0828.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Thu, 05 Oct 2023 09:32:07 GMT</lastBuildDate><item><title><![CDATA[Spring Data Jpa Auditing]]></title><description><![CDATA[Auditing 엔티티에 등록일, 수정일, 등록자, 수정자를 기록하고 싶을 때 사용하는 스프링 데이터 JPA 기능
+ 순수 JPA 기능만을 사용하여 등록일, 수정일을 기록할 때, 보통 엔티티가 상속받을 @MappedSuperclass…]]></description><link>https://ms0828.github.io/spring_data_jpa_Auditing/</link><guid isPermaLink="false">https://ms0828.github.io/spring_data_jpa_Auditing/</guid><pubDate>Sun, 24 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Auditing&lt;/h1&gt;
+&lt;p&gt;엔티티에 등록일, 수정일, 등록자, 수정자를 기록하고 싶을 때 사용하는 스프링 데이터 JPA 기능
+&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;@MappedSuperclass
+@Getter
+public class JpaBaseEntity{
+  
+
+  private LocalDateTime createdDate;
+  private LocalDateTime updatedDate;
+
+  @PrePersis    //persist 하기 전에 이 함수 호출
+  public void prePersis(){
+    LocalDateTime now = LocalDateTime.now();
+    createdDate = now;
+    updatedDate = now;
+  }
+
+  @PreUpdate  //update 하기 전에 이 함수 호출
+  public void preUpdate() {
+    updatedDate = LocalDateTime.now();
+  }
+
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;순수 JPA 기능만을 사용하여 등록일, 수정일을 기록할 때, 보통 엔티티가 상속받을 @MappedSuperclass인 BaseEntity를 구현한다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;이젠 스프링 데이터 JPA는 이 기능을 다음과 같이 제공한다.
+&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;스프링 부트 설정 클래스에 @EnableJpaAuditing을 적용&lt;/li&gt;
+&lt;li&gt;BaseEntity에 @EntityListeners(AuditingEntityListener.class)을 적용&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;@EnableJpaAuditing
+@SpringBootApplication
+public class DataJpaApplication{
+  
+  //psvm 생략
+
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;스프링 부트 설정 클래스&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;@EntityListeners(AuditingEntityListener.class)
+@MappedSuperclass
+@Getter
+public class BaseEntity{
+  
+  @CreateDate   //등록일자
+  private LocalDateTime createdDate;
+  
+
+  @LastModifiedDate   //수정일자
+  private LocalDateTime updatedDate;
+
+  // 등록자, 수정자는 메뉴얼 참고
+
+  //...
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;상속받을 BaseEntity 클래스&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;blockquote&gt;
+&lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+&lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%EB%8D%B0%EC%9D%B4%ED%84%B0-JPA-%EC%8B%A4%EC%A0%84/dashboard&quot;&gt;https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%EB%8D%B0%EC%9D%B4%ED%84%B0-JPA-%EC%8B%A4%EC%A0%84/dashboard&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content:encoded></item><item><title><![CDATA[Spring Data Jpa 사용자 정의 리파지토리]]></title><description><![CDATA[사용자 정의 리파지토리 구현 스프링 데이터 JPA…]]></description><link>https://ms0828.github.io/spring_data_jpa_사용자 정의 레파지토리/</link><guid isPermaLink="false">https://ms0828.github.io/spring_data_jpa_사용자 정의 레파지토리/</guid><pubDate>Sun, 24 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;사용자 정의 리파지토리 구현&lt;/h1&gt;
+&lt;p&gt;스프링 데이터 JPA 리파지토리는 인터페이스를 구현하면 스프링이 구현체를 자동으로 생성해준다. 그러나 직접 리파지토리를 커스터마이징하려면 수 많은 인터페이스 메소드를 오버라이딩 해야한다는 문제점이 있다. &lt;br&gt;
+스프링에서는 사용자 정의 리파지토리 인터페이스를 정의하는 방법을 제공한다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;public interface CustomRepository{
+
+  List&amp;lt;Member&gt; customFindMember();
+
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;인터페이스 정의&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;@RequiredArgsCostructor
+public class CustomRepostioryImpl implements CustomRepository{
+  
+  private final EntityManager em;
+
+  @Override
+  public List&amp;lt;Member&gt; customFindMember(){
+    return em.createQuery(&quot;select m from Member m&quot;).getResultList();
+  }
+
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;인터페이스 구현&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;구현체의 이름은 정의한 인터페이스+Impl 규칙을 따라야 한다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;public interface MemberRepository extends JpaRepository&amp;lt;Member, Long&gt;, CustomRepository {
+  
+  //...
+  
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;사용하는 리파지토리에 사용자 정의 인터페이스 상속&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;blockquote&gt;
+&lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+&lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%EB%8D%B0%EC%9D%B4%ED%84%B0-JPA-%EC%8B%A4%EC%A0%84/dashboard&quot;&gt;https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%EB%8D%B0%EC%9D%B4%ED%84%B0-JPA-%EC%8B%A4%EC%A0%84/dashboard&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content:encoded></item><item><title><![CDATA[Spring_Data_Jpa_Fetch Join]]></title><description><![CDATA[Fetch Join에 대한 포스팅
+링크 <>  @EntityGraph JPA의 Fetch Join을 Spring Data Jpa는 @EntityGraph로 해결 
+@EntityGraph(attributePaths…]]></description><link>https://ms0828.github.io/spring_data_jpa_@EntityGraph/</link><guid isPermaLink="false">https://ms0828.github.io/spring_data_jpa_@EntityGraph/</guid><pubDate>Sat, 23 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;br&gt;
+&lt;p&gt;Fetch Join에 대한 포스팅
+링크 &amp;#x3C;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h1&gt;@EntityGraph&lt;/h1&gt;
+&lt;p&gt;JPA의 Fetch Join을 Spring Data Jpa는 @EntityGraph로 해결 &lt;br&gt;
+@EntityGraph(attributePaths = {&quot;연관 필드 명&quot;})&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;순수 JPA의 Fetch Join 예시 코드&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;String query = &quot;SELECT m from Member m join fetch m.team&quot;;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Spring Data Jpa의 @EntityGraph를 이용한 Fetch Join&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;@EntityGraph(attributePaths = {&quot;team&quot;})
+List&amp;lt;Member&gt; findMemberFetchJoin();&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;blockquote&gt;
+&lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+&lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%EB%8D%B0%EC%9D%B4%ED%84%B0-JPA-%EC%8B%A4%EC%A0%84/dashboard&quot;&gt;https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%EB%8D%B0%EC%9D%B4%ED%84%B0-JPA-%EC%8B%A4%EC%A0%84/dashboard&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content:encoded></item><item><title><![CDATA[Spring Data Jpa 1]]></title><description><![CDATA[공통 인터페이스 기능 JpaRepository 인터페이스 - 공통 CRUD 제공 순수 JPA 기반으로 리포지토리로 만들 때, 모든 리조지토리의 CRUD 함수 구현 형식이 중복된다는 것을 알 수 있다. 이를 간편화 하기 위해 스프링 데이터 JPA…]]></description><link>https://ms0828.github.io/spring_data_jpa_1/</link><guid isPermaLink="false">https://ms0828.github.io/spring_data_jpa_1/</guid><pubDate>Sat, 23 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;공통 인터페이스 기능&lt;/h2&gt;
+&lt;h3&gt;JpaRepository 인터페이스 - 공통 CRUD 제공&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;순수 JPA 기반으로 리포지토리로 만들 때, 모든 리조지토리의 CRUD 함수 구현 형식이 중복된다는 것을 알 수 있다. 이를 간편화 하기 위해 스프링 데이터 JPA는 인터페이스 기능으로 CRUD를 단순화하여 지원한다. &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;//선언
+
+//CRUD을 지원하는 레파지토리 생성하려면, JpaRepository를 상속받은 인터페이스를 선언
+//JpaRepository의 제네릭은 &amp;lt;엔티티 타입, PK 타입&gt;
+public interface MemberRepository extends JpaRepository&amp;lt;Member, Long&gt;{
+
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;선언 시 순수 JPA와 다르게 @Repository 생략 가능, 스프링 데이터 JPA가 자동 처리&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;//생성
+
+@Autowired MemberRepository memberRepository;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;실행 시 스프링 데이터 JPA에서 CRUD 연산을 지원하는 MemberRepository 인터페이스를 자체 구현하여, 구현체를 프록시 형태로 Injection한다. (인터페이스 구현체 자동 생성)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 678px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/42d6bb69a1f0e438cbc7c76429d1324e/dc057/image.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 54.70588235294118%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAYAAAB/Ca1DAAAACXBIWXMAABJ0AAASdAHeZh94AAABYElEQVR42pWTSW/CQAyF5///HC5InBHccgMpKVAQe8IatiQsr/lcDYoQVduRLM94PM9+tsclSawwjNTv9/URRRqNRup2uxoMPhWV5zhJxLrf73o8Hrb32q+q3RV5rrwoVJSSZdm3zjPlpT3Lcl2v1+cD9ofDQfv9XsvlUnEcm+aMnbeOyL8tD3g6nQyg1+up2Wyq1Wqp3W7bebFY2P2fAP3Cd7PZaD6fmwRBoMlkYvvVaqXb7SZH9MvlYikfj0fTXji/q5m34fNqc9RtOp1qvV5blKRsAvvxeGxC1FfqPlsS+RFwt9tpu92ahlaapkaFghMAv2q30efz+Qnk7Y4os9nsCQgAYOwJBK1Op2NnMqYpsKDDCKy88NYxHgDiiNAtHIfDoekqVUDpJI1oNBqq1Wqq1+sWGAYG+J+xoUkEYR75AGEYlh9gYDNLmWDpuKTw76R655tAdohnAisyxMYcfgE8okzndPoTZwAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;내부 모습&apos; title=&apos;&apos; src=&apos;/static/42d6bb69a1f0e438cbc7c76429d1324e/dc057/image.png&apos; srcset=&apos;/static/42d6bb69a1f0e438cbc7c76429d1324e/e7570/image.png 170w,
+/static/42d6bb69a1f0e438cbc7c76429d1324e/f46e7/image.png 340w,
+/static/42d6bb69a1f0e438cbc7c76429d1324e/dc057/image.png 678w&apos; sizes=&apos;(max-width: 678px) 100vw, 678px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;내부 모습&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h3&gt;공통 인터페이스 분석&lt;/h3&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 507px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/0696e597cea8d88e966d0b31157a6075/f03ec/image-1.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 133.52941176470588%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAbCAYAAAB836/YAAAACXBIWXMAABJ0AAASdAHeZh94AAACaklEQVR42p2W524qQQyF9/0fCYRAiPKHHnqvofeW0Bx9loz27g3SkpUsZnfGx+XYHpz9fi+j0UgGg4H0+33Z7XbC83g8/vm1x/vufu73uzjT6VRyuZyk02lJpVIKfDweBUPr9VoNsEY2m41st9vnu1s4h57DAbdVrCCHw0EPtVotKRaLks/nBeMYuV6vcrvdnmcRvnFeAfkAqBv46+tLZTgcSiwWk0wmo2B481vYYLDngOo9AND5fFbh4Gq10nDwgm/ss/YFyJpcfX9/qzLh4mE8Hpd2uy2Xy0VOp5Pm0reH5K1SqUij0ZB6va7vgLkJw2vfgL1eT8rlstRqNSUCZUhwPyj7BsSbQqGgdTmZTJRxFP4MOB6PZTabKasQACBCuAhr8uwbkE1ChEn2CNvKBVLY+03nJSAswjLKeDSfz9UjWOeblY7vsoGEZrOp3ZFMJiUcDksgENDihizSYT3vy0NKJhKJSDAY1B5HqEN+6Rw8XiwW/gEpWhSWy6V6Qxl9fn4qSYRMOl6GjLI1u1eMFDwilygBZmL9jpB38uyQL0L8+PjQ2iNHdASlwSEEb7HO2nrcvTbBiENYtBZdQZt1u10NEwBjFaPGrBvADCJEwO9/85C1bSKAYQSvOQuQ7XvnIftPUkzYhAA8ByyRSEgoFJJoNCrVavXZJW+xTA1yHZBPJg6CAUImT+aNb0CGAkSVSiXNK4B4TfkQ6tvDgZwRHuTgGWcs8X+aNp1O5zkP8ZAUGPM2xt4CBIirNZvNan1iACIgxIbGy/HlLRsevKFnrd3cNWihs/YC6jVq96/70vZ2hA1Yr7h17A/AD78nG/skMwG7AAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;인터페이스 구성&apos; title=&apos;&apos; src=&apos;/static/0696e597cea8d88e966d0b31157a6075/f03ec/image-1.png&apos; srcset=&apos;/static/0696e597cea8d88e966d0b31157a6075/e7570/image-1.png 170w,
+/static/0696e597cea8d88e966d0b31157a6075/f46e7/image-1.png 340w,
+/static/0696e597cea8d88e966d0b31157a6075/f03ec/image-1.png 507w&apos; sizes=&apos;(max-width: 507px) 100vw, 507px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;인터페이스 구성&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;(T findOne(ID)는 Optional&lt;T&gt; findById(ID)로 바뀜) : 엔티티 조회&lt;/li&gt;
+&lt;li&gt;(boolean exists(ID)는 boolean existsById(ID)로 바뀜) : 엔티티 존재 확인&lt;/li&gt;
+&lt;li&gt;save() : 새로운 엔티티는 저장, 기존에 있는 엔티티는 병합(업데이트)&lt;/li&gt;
+&lt;li&gt;delete() : 엔티티 삭제 -&gt; 내부에서 EntityManager.remove() 호출&lt;/li&gt;
+&lt;li&gt;findAll() : 모든 엔티티 조회 (Sort나 Pageable 가능)&lt;/li&gt;
+&lt;li&gt;getOne() : 엔티티를 프록시로 조회 -&gt; 내부에서 EntityManager.getReference() 호출&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h1&gt;쿼리 메소드&lt;/h1&gt;
+&lt;h2&gt;메소드 이름으로 Query 정의하기&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;우리가 직접 구현한 기능을 찾으려면?
+예를들어 findByName() 같은 이름으로 엔티티를 찾는 함수를 만드려면?
+Spring Data Jpa는 메소드 이름으로 Query를 커스터마이징하는 기능을 제공한다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;// Member관련 Repository 클래스 안에 함수를 직접 선언하여 구현하는 모습
+
+public List&amp;lt;Member&gt; findByUsernameAndAgeGreaterThen(String name, int age){
+  return entityManager.createQuery(&quot;select m from Member m where m.username = :username and m.age &gt; :age&quot;).setParameter(&quot;username&quot;, name).setParameter(&quot;age&quot;, age).getResultList();
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;순수 JPA를 사용하여 함수를 정의 할 때&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;public interface MemberRepository extends JpaRepository&amp;lt;Member, Long&gt;{
+  List&amp;lt;Member&gt; findByUsernameAndAgeGreaterThan(String username, int age);
+  //정해진 형식에 맞춰 메소드를 선언
+  //메소드 이름만으로 스프링 데이터 JPA가 인터페이스 구현 클래스를 생성할 때, 직접 정의한 함수도 구현된다.
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;스프링 데이터 JPA를 사용하여 메소드 이름으로 함수를 정의&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;메소드 쿼리 이름 형식은 Spring Data Jpa 매뉴얼을 참고하자.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- &lt;https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation&gt; --&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h2&gt;@Query을 사용하여 메소드에 Query 정의하기&lt;/h2&gt;
+&lt;p&gt;메소드 이름으로 Query를 정의하는 방법의 단점은 조건이 길어지면 함수명도 똑같이 길어진다는 단점이 있다. (가독성이 낮다.) &lt;br&gt;
+실무에서는 @Query를 사용하여 메소드에 Query를 직접 정의하는 방법이 많이 쓰인다.
+&lt;br&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;public interface MemberRepository extends JpaRepository&amp;lt;Member, Long&gt;{
+  
+  @Query(&quot;select m from Member m where m.username :username and m.age = :age&quot;)
+  List&amp;lt;Member&gt; findUser(@Param(&quot;username&quot;) String name, @Param(&quot;age&quot;) int age);
+
+  //@Query를 사용하여 메소드에 직접 Query를 정의하는 모습
+}
+
+
+//---사용할 때----
+//memberRepository를 스프링에 의해 주입 받았다고 가정
+
+List&amp;lt;Member&gt; result = memberRepository.findUser(&quot;name_A&quot;, 15);&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;장점 : @Query를 사용하여 Query를 정의할 때, 애플리케이션 로딩 시점에 Query를 파싱하여 SQL 문법 오류를 미리 찾을 수 있다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h3&gt;@Query를 사용하여 Entity의 DTO 조회하기&lt;/h3&gt;
+&lt;p&gt;위에는 Entity 대상으로 조회하는 방법&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;특정 Entity의 DTO를 조회하려면?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;p&gt;엔티티의 Dto를 조회하는 방법&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;//Member의 id와 teamName과 같은 특정 필드를 가져오기 위한 MemberDto가 있다고 가정
+//(Member에는 team이라는 연관 필드가 있다.)
+//해당 MemberDto의 패키지는 study.jpa.dto에 있다.
+
+@Query(&quot;select new study.jpa.dto.MemberDto(m.id, t.name) from Member m join m.team t)
+List&amp;lt;MemberDto&gt; findMemberDto();&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Dto의 패키지 명을 명시하고, new 로 Dto를 생성하며 가져온다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h2&gt;컬렉션의 파라미터 바인딩&lt;/h2&gt;
+&lt;p&gt;여러 개의 값을 SQL문의 In절의 조건으로 추가하고 싶으면?&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;컬렉션을 파라미터 바인딩으로 넘길 수 있다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;@Query(&quot;select m from Member m.username in :names&quot;)
+List&amp;lt;Member&gt; findByNames(@Param(&quot;names) List&amp;lt;String&gt; names);
+
+//name이 In절에 포함되어 있는 Member Entity를 조회하는 코드 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h2&gt;반환 타입&lt;/h2&gt;
+&lt;p&gt;스프링 데이터 Jpa는 쿼리에 대한 컬렉션, 단건, 옵셔널 등 다양한 반환타입을 지원한다.&lt;br&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;Optional&amp;lt;Member&gt; optionalType = memberRepository.findMemberByUsername(&quot;nameA&quot;);&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ex: 쿼리 메소드의 반환 타입이 유연하게 적용됨 &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;blockquote&gt;
+&lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+&lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%EB%8D%B0%EC%9D%B4%ED%84%B0-JPA-%EC%8B%A4%EC%A0%84/dashboard&quot;&gt;https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%EB%8D%B0%EC%9D%B4%ED%84%B0-JPA-%EC%8B%A4%EC%A0%84/dashboard&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content:encoded></item><item><title><![CDATA[Spring_Data_Jpa_페이징, 정렬]]></title><description><![CDATA[스프링 데이터 JPA 페이징과 정렬 기능 'org.springframework.data.domain.Sort'
+'org.springframework.data.domain.Pageable'
+'org.springframework.data.domain…]]></description><link>https://ms0828.github.io/spring_data_jpa_페이징/</link><guid isPermaLink="false">https://ms0828.github.io/spring_data_jpa_페이징/</guid><pubDate>Sat, 23 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;스프링 데이터 JPA 페이징과 정렬 기능&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&apos;org.springframework.data.domain.Sort&apos;&lt;br&gt;
+&apos;org.springframework.data.domain.Pageable&apos;&lt;br&gt;
+&apos;org.springframework.data.domain.Page&apos;&lt;br&gt;
+&apos;org.springframework.data.domain.Slice&apos;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;
+Pageable 인터페이스를 상속받은 PageRequest를 쿼리 메소드의 마지막 인자로 전달하면, Page&lt;T&gt; 혹은 Slice&lt;T&gt; 반환 가능 (Page, Slice 둘 중 하나 선택 가능)&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Slice는 요청 개수 + 1 개의 Entity를 요청함 &lt;br&gt;
+(어플리케이션에서 리스트에서 다음 리스트 요소 미리보기 기능을 구현할 때 보통 사용)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;코드 예시&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;public interface MemberRepository extends JpaRepository&amp;lt;Member, Long&gt;{
+
+  //...
+
+  //@Query(value = &quot;select m from Member m left join m.team t&quot;, countQuery = &quot;select count(m) from Member m&quot;)    
+  Page&amp;lt;Member&gt; findByName(String name, Pageable pageable);
+
+  //매소드 이름으로 만든 쿼리 메소드
+  //반환 타입 Page&amp;lt;T&gt;, 마지막 인자로 Pageable 인터페이스
+  //주석 처리 된 @Query문 처럼, 복잡한 테이블의 경우 countQuery는 따로 빼서 최적화 할 수 있다.
+
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;br&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;public void paging(String name){
+
+  memberRepository.save(new Member(&quot;name_A&quot;));
+  memberRepository.save(new Member(&quot;name_B&quot;));
+  memberRepository.save(new Member(&quot;name_C&quot;));
+  memberRepository.save(new Member(&quot;name_D&quot;));
+  memberRepository.save(new Member(&quot;name_E&quot;));
+
+  
+  //PageRequest.of(페이지 인덱스 , 크기, 정렬 순서, 정렬 기준 프로퍼티)
+  //--&gt; PageRequest 반환
+  //정렬 순서와 정렬 기준 프로퍼티는 생략 가능
+  //의미 : 0페이지에서 3개 Entity의 페이징요청을 반환 받는다.
+  PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC), username);
+  
+
+  
+  //위에 쿼리 메소드 선언에 주석 처리 된 @Query(&quot;~&quot;, countQuery = &quot;~&quot;)처럼 countQuery를 따로 빼지 않으면, 페이징에 필요한 TotalCount 까지 조회하는 쿼리까지 실행 (Page 타입으로 반환 시)
+  Page&amp;lt;Member&gt; page = memberRepository.findByName(name, pageRequest);
+  
+
+
+  
+  //paging 결과 추출
+  List&amp;lt;Member&gt; pagingResult = page.getContent();
+  
+  //totalCount (조회한 Entity 총 개수)
+  long totalCount = page.getTotalElements();
+
+  //결과로 나온 총 page 개수
+  int pageCount = page.getTotalPages();
+
+  //해당 page 번호
+  int pageIndex = page.getNumber();
+
+  //다음 page 존재 유무
+  boolean hasNext = page.hasNext();
+
+
+
+  //page 요소들을 DTO로 반환하고 싶을 때
+  Page&amp;lt;MemberDto&gt; toDto = page.map(member -&gt; new MemberDto(member.getId(), member.getUsername()));
+
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;blockquote&gt;
+&lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+&lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%EB%8D%B0%EC%9D%B4%ED%84%B0-JPA-%EC%8B%A4%EC%A0%84/dashboard&quot;&gt;https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%EB%8D%B0%EC%9D%B4%ED%84%B0-JPA-%EC%8B%A4%EC%A0%84/dashboard&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content:encoded></item><item><title><![CDATA[Spring_Data_Jpa_벌크성 쿼리]]></title><description><![CDATA[벌크성 쿼리 벌크성 쿼리란 한 번에 많은 Entity에 대한 쿼리를 하는 것을 말함
+Spring Data Jpa는 순수 JPA의 executeUpdate() 대신 @Modifying, @Query("update…]]></description><link>https://ms0828.github.io/spring_data_jpa_벌크성 쿼리/</link><guid isPermaLink="false">https://ms0828.github.io/spring_data_jpa_벌크성 쿼리/</guid><pubDate>Sat, 23 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;벌크성 쿼리&lt;/h1&gt;
+&lt;p&gt;벌크성 쿼리란 한 번에 많은 Entity에 대한 쿼리를 하는 것을 말함&lt;br&gt;
+Spring Data Jpa는 순수 JPA의 executeUpdate() 대신 @Modifying, @Query(&quot;update ~&quot;) 로 벌크성 쿼리를 지원&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;순수 JPA를 이용한 벌크성 쿼리 예시 코드&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;//모든 회원의 나이에 + 1 한 값을 업데이트 하는 코드
+entityManager.createQuery(&quot;update Member m set m.age = m.age + 1&quot;).executeUpdate();
+
+//executeUpdate()는 이 쿼리로 업데이트 된 Entity의 개수를 반환&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;스프링 데이터 JPA에서의 벌크성 쿼리&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;public interface MemberRepository extends JpaRepository&amp;lt;Member, Long&gt;{
+
+  //...
+
+
+  //메소드 이름으로 쿼리를 하는 기능을 이용하여 함수 작성
+  @Modifying
+  @Query(&quot;update Member m set m.age = m.age + 1&quot;)
+  int buikAgePlus();      //업데이트 된 Entity 수 반환
+
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;벌크성 쿼리는 영속성 컨텍스트와 업데이트 된 DB의 주기에 조심해야 한다. &lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;벌크성 쿼리는 영속성 컨텍스트를 무시하고 DB에 바로 Query가 실행되기 때문에, 영속성 컨텍스트에 남아 있는 Entity들은 업데이트 되지 않은 채로 그대로 남아있다.&lt;br&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;벌크성 쿼리를 진행 한 후에, entityManager.clear() 를 이용하여 영속성 컨텍스트를 초기화 해주는 것이 좋다.&lt;/li&gt;
+&lt;li&gt;혹은 @Modifying에 clearAutomatically = true 속성을 지정하면, 벌크성 쿼리 후 자동으로 영속성 컨텍스트를 clear 해준다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;blockquote&gt;
+&lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+&lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%EB%8D%B0%EC%9D%B4%ED%84%B0-JPA-%EC%8B%A4%EC%A0%84/dashboard&quot;&gt;https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%EB%8D%B0%EC%9D%B4%ED%84%B0-JPA-%EC%8B%A4%EC%A0%84/dashboard&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content:encoded></item><item><title><![CDATA[JPQL 객체지향 쿼리 언어 2]]></title><description><![CDATA[JPQL 객체지향 쿼리 언어 2 경로 표현식 특징 여기서 말할 탐색은 "." 으로 필드를 탐색한다는 의미 상태필드는 경로 탐색의 끝이다. 더 이상 탐색 불가 단일 값 연관 경로는 묶시적 내부 조인이 이루어 지고, 더 이상 탐색 가능  SQL…]]></description><link>https://ms0828.github.io/jpql_JPQL 2편/</link><guid isPermaLink="false">https://ms0828.github.io/jpql_JPQL 2편/</guid><pubDate>Fri, 22 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;JPQL 객체지향 쿼리 언어 2&lt;/h1&gt;
+&lt;h2&gt;경로 표현식 특징&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;여기서 말할 탐색은 &quot;.&quot; 으로 필드를 탐색한다는 의미&lt;/li&gt;
+&lt;li&gt;상태필드는 경로 탐색의 끝이다. 더 이상 탐색 불가&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;단일 값 연관 경로는 묶시적 내부 조인이 이루어 지고, 더 이상 탐색 가능 &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;SQL : select ~ from ~ inner join on member.team&lt;em&gt;id = team&lt;/em&gt;id 쿼리 발생&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;
+&lt;ol start=&quot;3&quot;&gt;
+&lt;li&gt;컬렉션 값 연관 경로는 묵시적 내부 조인이 이루어 지고, 더 이상 탐색 불가&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;다음과 같이 명시적으로 join을 표기하고, 별칭을 얻으면 별칭을 통해 탐색 가능&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;String query = &quot;select m.username From Team t join t.members m&quot;;
+//team 필드 안에 members는 List&amp;lt;Member&gt;로 컬렉션으로 가정&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;br&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;실무에서 명시적 join을 쓰는 습관을 기르자. 묵시적 join은 유지보수의 어려움을 야기한다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;join 키워드를 직접 쓰는 것을 명시적 join이라고 한다.
+묵시적 join은 경로 표현식에 의해 묵시적으로 SQL문에서 join이 발생하는 것을 말한다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;
+&lt;p&gt;묵시적 join은 항상 inner join 실행, 컬렉션은 경로 탐색의 끝이기 때문에 명시적 join을 통해 Rename을 얻어야 경로 탐색 가능&lt;/p&gt;
+&lt;p&gt;경로 탐색은 주로 SELECT, WHERE 절에서 사용하지만, 묵시적 join으로 인해 SQL의 FROM(JOIN) 절에 영향을 준다.&lt;/p&gt;
+&lt;br&gt;
+&lt;h2&gt;패치 조인 (Fetch join)&lt;/h2&gt;
+&lt;p&gt;SQL 조인의 종류가 아니다. &lt;br&gt;
+JPQL에서 성능 최적화를 위해 제공하는 기능&lt;br&gt;
+연관된 엔티티나 컬렉션을 SQL 한 번에 함께 조회할 수 있게 해줌&lt;/p&gt;
+&lt;br&gt;
+&lt;blockquote&gt;
+&lt;p&gt;전체 member를 조회할 때, 각 member 마다 team의 이름을 조회하는 반복문이 있을 때, 각각의 member.team에 대한 쿼리가 전부다 실행&lt;br&gt;
+때문에 N + 1 문제 발생
+(1은 멤버를 조회할 때, N은 각각 멤버에 대한 연관 필드를 조회할 때) &lt;br&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;이 문제를 fetch Join 으로 해결 &lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&quot;select m from Member m left join fetch m.team&quot; 와 같이
+fetch join을하면 멤버를 조회할 때, team도 한 번에 조회한다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;N+1 문제가 해결&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;실행된 sql문은 다음과 같다. &lt;br&gt;
+select member0, team1 from member member&lt;em&gt;0 left outer join team team1 on member0.team&lt;/em&gt;id=team1.team_id&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;결과로 모든 member의 team 연관 필드에 프록시가 아닌 진짜 Entity가 채워진다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;연관관계가 있는 객체 그래프를 join을 활용하여 한 번에 끌고 온다.  (join과 차이점 : join은 DB 관점에서만 join, fetch join은 select에 있는 Entity 안에 연관 필드를 해당 join 대상으로 초기화!)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h3&gt;@ManyToOne 관계에서 패치 조인&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;String query = &quot;SELECT m from Member m join fetch m.team&quot;;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;SQL에서 SELECT M.*, T.* FROM MEMBER M INNER JOIN TEAM T ON M.TEAM_ID = T.ID 로 실행&lt;br&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;SELECT가 M과 T에 대해 각각 일어나지 않고 한 번에 실행, 즉시 로딩과 유사&lt;/p&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 297px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/c9a74e61cee40a8bc09edab5ba658ba9/4c69f/image.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 57.64705882352942%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAYAAABiDJ37AAAACXBIWXMAABJ0AAASdAHeZh94AAABkklEQVR42q2Sx44CMRBE/f9/hARcEEikC2IGEDmnGXJOtXq9MtrltIcdqTW2u7qqum2nf/7c58Hr9dJms1Ecx1qtVrY+HA5ar9fa7Xb2J+73+98JS6WS0um0UqmUisWiKpWKMpmMwjBUPp9XNpvVfr9/438RXi4XU7terzqfz7YGxJ94Pp96PB4Wt9vN/mB9HXm/p87REsqTyUTT6VSdTkeNRkPj8VhBEJgzXBUKBdXrdVWrVQ0GA223W/X7fatlBMvlUsfjUY65JJNJtdttmxkA2gQMiPYTiYSGw6HK5bKNodvtmqtaraZcLmezRYAxOIrm87mpUERAhtvRaGRAhNjjnMtCHJLFYmH40+lkeS7PAQYEAALAtErLnhAxRtJqtWyPQ9ojj0tmP5vNvgkBRFFkhDjFHYQAvCqtkGO+rJkhrsAgwmXR6dsh1rkcFCmCkFbYc44gjrkUugGDAc6YOW7fLX86hIhCADiAwN9ir9ezNUKQkG82m/ZkyOPa0T8HBGvs+3dJESI+9xNHgAELkX+HX8GNiB4+YyxtAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;패치 조인의 SELECT 모습&apos; title=&apos;&apos; src=&apos;/static/c9a74e61cee40a8bc09edab5ba658ba9/4c69f/image.png&apos; srcset=&apos;/static/c9a74e61cee40a8bc09edab5ba658ba9/e7570/image.png 170w,
+/static/c9a74e61cee40a8bc09edab5ba658ba9/4c69f/image.png 297w&apos; sizes=&apos;(max-width: 297px) 100vw, 297px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;패치 조인의 SELECT 모습&lt;/figcaption&gt;
+  &lt;/figure&gt;
+&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 295px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/9eb06850360ee48c8079cbd5892330c7/60cc9/image-1.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 61.76470588235294%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAYAAABiDJ37AAAACXBIWXMAABJ0AAASdAHeZh94AAABeElEQVR42p2SW4vCMBCF/f+/R3Bf1ndBQRBERLy1Sb223u/tWb+RlnVxZdlCaJKZOfnmJKXL5aLdbqfFYqHlcmnz2+2m/34lhEajkZrNprrdrpxzJo5wHMfabDZvBbIsexak6HQ6CdLVamWUCK7Xax2PR5u/KvyVMEkSK5xMJprP56rX68U8DEONx2MdDgcj5tA0TYtBHfvEc5uM8Hq92gZ0CEFFMuSz2cwKhsOhWUBOu91Wr9cTMFhFPhDkGeH5fDavKMBHgrTPH3+JBUFg/+12awLkkuO9N2EsAsoEIeFkaFqtlrVKETGI8Y/kv/j41DJ+QAs6h7BP/NWl4Cd5UO/3e6t7uhTooihSrVZTv9+3NW0OBgOjZy9vEz+JQd9oNDSdTq118zB/NiwQ5x2SmN9e/mzylhnfb5hcfCU3y1KVCEDAyYgncVKQ2Dp5rDGdPVp966FzXu6OC9nP4X1k7ZXLZX1Wq6pUPtTpdOTv1gRBaJf3GK74fwFmV5WcbV/p4wAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;패치 조인으로 만들어진 영속성 컨텍스트 모습&apos; title=&apos;&apos; src=&apos;/static/9eb06850360ee48c8079cbd5892330c7/60cc9/image-1.png&apos; srcset=&apos;/static/9eb06850360ee48c8079cbd5892330c7/e7570/image-1.png 170w,
+/static/9eb06850360ee48c8079cbd5892330c7/60cc9/image-1.png 295w&apos; sizes=&apos;(max-width: 295px) 100vw, 295px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;패치 조인으로 만들어진 영속성 컨텍스트 모습&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;기존에 LAZY 로딩으로 엔티티가 다른 참조 엔티티를 불러올 때, 각기 다른 참조 엔티티를 불러오기 위해 각각 SELECT를 호출하는 N + 1 문제 해결&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;엔티티 둘을 조인한 데이터가 영속성 컨텍스트에 한 번에 담겨서 성능 최적화가 된다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;h3&gt;컬렉션 패치 조인 (일대다 관계)&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;String query = &quot;SELECT t FROM Team t join fetch t.members&quot;;
+//Team 필드에 List &amp;lt;member&gt; members라는 컬렉션 연관 필드가 있다고 가정&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;컬렉션 패치 조인의 주의점&lt;/p&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 395px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/2734571da3111ed0091ac7ba34d58610/50f4b/image-2.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 73.52941176470587%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAPCAYAAADkmO9VAAAACXBIWXMAABJ0AAASdAHeZh94AAAByklEQVR42o2T547CQAyEef+3QvCLLnrvhN57ndNnaXOJAN1FWtZh7dmxZxLRP57X62X77XbTcrnUfD7X9Xr9mBtxwfl8Vrvd1nQ61fP59EF49vu9AXmep1gspnQ6rfF4bMCHwyGUa4AA9Xo9dbtdNZtNHY9HP+l0Otl/gLAnk0nVajVb+Xxeg8HAmPuA9/tduVxOxWLRgElsNBrGYLPZqNPpqNVqWTwajbRarbRYLIwAq9/v63K5/AIyC27msF6vWwwIhY/HwwflAjoYDocWk1cqlQwwxJAfkrh9MplY8na79Vtmn81mtmgPUHLpplwu2/9cHAJEEGYFEOCwYy8UClZMi4iFAMyXRYxYdPgmSlBpWqcYtjAAGGYwR/2/nsg337k2AGHxzqyCbL4CkohStOKEiMfjymQyymazSiQSikajSqVS2u121gk1tBtU2AdEXdojEYugHHOkdc6YbaVSMVO7d0QhjwuwXggQMLwIQxIRAjBmV61W7YtghhjZeZGLme96vQ7bhplwwG0UAkgx4hDDhk8OIEZBzDkkyEG8EEPnMxjBkAIYAE4y1oAF3zJW4Sxodi58a5nZUej8FfQa/nTvLnYedOdBUX4ARohzO8IFvzUAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;일대다 관계의 주의 점&apos; title=&apos;&apos; src=&apos;/static/2734571da3111ed0091ac7ba34d58610/50f4b/image-2.png&apos; srcset=&apos;/static/2734571da3111ed0091ac7ba34d58610/e7570/image-2.png 170w,
+/static/2734571da3111ed0091ac7ba34d58610/f46e7/image-2.png 340w,
+/static/2734571da3111ed0091ac7ba34d58610/50f4b/image-2.png 395w&apos; sizes=&apos;(max-width: 395px) 100vw, 395px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;일대다 관계의 주의 점&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 326px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/184613dd595a70e870a7bfc96454804b/15a61/image-3.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 37.64705882352941%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAICAYAAAD5nd/tAAAACXBIWXMAABJ0AAASdAHeZh94AAABFUlEQVR42qWRSY/CMAyF8///UC+UOXNDalWVVipCdAMKdN/bNzyjqWZjLhPJiu3YX54ThX+seZ5/+KppGrRti7qu0ff9cvi5+HvzX0slSYLb7Ybz+Yw0Tb80f4B/g03ThLIsQUEUU1WV5BQhp9NJgNfrVYqYy7JMLIoi5Hm+NIzjKEAKCcMQjuPA8zz4vi/1Ko5jKaZKgodhwOFwAPNs2mw2uN/vC4CNPNvv91JvmiZc18XxeBSGIpXqLpeLJIqiQN3UMgZjgghkbNs2DMOQZk4TBAG22y0sy5KLOJm8IR0CCX/1Acx1XSc2PD6v7we5iAL4JPQ5nVqtdOi6Dk3TsF6/iYrXtoO92z33R+w8RuUbPs2V/DsWy2DGxygqAwAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;컬렉션 패치 조인 결과&apos; title=&apos;&apos; src=&apos;/static/184613dd595a70e870a7bfc96454804b/15a61/image-3.png&apos; srcset=&apos;/static/184613dd595a70e870a7bfc96454804b/e7570/image-3.png 170w,
+/static/184613dd595a70e870a7bfc96454804b/15a61/image-3.png 326w&apos; sizes=&apos;(max-width: 326px) 100vw, 326px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;컬렉션 패치 조인 결과&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;DB 관점에서 보면 일대다 관계의 join은 데이터 중복이 일어난다.&lt;/p&gt;
+&lt;br&gt;
+&lt;blockquote&gt;
+&lt;p&gt;JPQL의 DISTINCT 기능으로 해결&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SQL에 DISTINCT를 추가&lt;/li&gt;
+&lt;li&gt;애플리케이션에서 엔티티 중복 제거&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;String query = &quot;select distinct t From Team t join fetch&quot;
+//sql 관점에서 보면 join 결과의 테이블에 데이터가 다르므로 중복제거 실패
+//JPA가 distinct를 인식하여 추가로 애플리케이션에서 중복 제거 시도
+//같은 식별자를 가진 Team 엔티티 제거&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h3&gt;패치 조인과 일반 조인의 차이&lt;/h3&gt;
+&lt;p&gt;일반 조인은 연관된 엔티티를 함께 조회하지 않는다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;연관된 엔티티와 매핑된 select 대상만 가져온다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;연관된 엔티티가 영속성으로 관리되지 않는다. -&gt; 같은 종류의 (연관된)엔티티를 가져오려면 다시 쿼리를 날려야 한다.&lt;/li&gt;
+&lt;li&gt;단지 SELECT 절에 지정한 엔티티만 가져오기 때문이다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;패치 조인은 한 쿼리에 연관된 엔티티까지 한 번에 가져와서 영속성 컨텍스트에 관리한다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;연관된 엔티티도 함께 조회 (즉시 로딩)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;객체 그래프를 SQL 한 번에 조회하는 개념&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;패치 조인의 한계&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;패치 조인 대상에는 Rename을 할 수 없다. (하이버네이트는 가능하나 가급적 사용하지 말자)&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;둘 이상의 컬렉션은 패치 조인 불가&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;데이터 뻥튀기(중복) 위험&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;컬렉션을 패치 조인하면 페이징 사용 불가&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;일대일, 다대일 같은 단일 값 연관 필드는 패치 조인해도 페이징 가능
+컬렉션은 일대다 관계라 불가&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h2&gt;패치 조인 정리&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;연관된 엔티티들을 SQL 한 번에 조회&lt;/li&gt;
+&lt;li&gt;엔티티에 적용하는 LAZY 로딩 전략보다 우선순위가 높음&lt;/li&gt;
+&lt;li&gt;객체 그래프를 유지할 때 사용하면 효과적&lt;/li&gt;
+&lt;li&gt;Tip : 모두 LAZY 전략을 적용시키고, 최적화 필요한 곳에 패치 조인을 한다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;br&gt;
+&lt;br&gt;
 &lt;blockquote&gt;
 &lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
 &lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/ORM-JPA-Basic&quot;&gt;https://www.inflearn.com/course/ORM-JPA-Basic&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content:encoded></item><item><title><![CDATA[JPQL 객체지향 쿼리 언어 1]]></title><description><![CDATA[JPQL 객체지향 쿼리 언어 1 프로젝션 SELECT 절에 조회할 대상을 지정
+대상은 Entity, Embedded 타입, Scalar타입 (기본 데이터 타입) getResult()로 가져온 대상이 Entity일 경우(Entity 프로젝션), JPA…]]></description><link>https://ms0828.github.io/jpql_JQPL 1편/</link><guid isPermaLink="false">https://ms0828.github.io/jpql_JQPL 1편/</guid><pubDate>Thu, 21 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;JPQL 객체지향 쿼리 언어 1&lt;/h1&gt;
+&lt;h2&gt;프로젝션&lt;/h2&gt;
+&lt;p&gt;SELECT 절에 조회할 대상을 지정&lt;br&gt;
+대상은 Entity, Embedded 타입, Scalar타입 (기본 데이터 타입)&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;getResult()로 가져온 대상이 Entity일 경우(Entity 프로젝션), JPA는 가져온 Entity를 영속성 관리 상태로 저장한다.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;br&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;String entityProjectionQuery1 = &quot;SELECT m FROM Member m&quot;; //엔티티 프로젝션
+
+String entityProjectionQuery2 = &quot;SELECT m.team FROM Member m&quot;; //Member 엔티티가 참조하고 있는 있는 Team 엔티티 프로젝션
+
+String embeddedTypeProjectionQuery = &quot;SELECT m.address FROM Member m&quot;; //임베디드 타입 프로젝션 (Member의 Address라는 임베디드 값 타입의 필드가 있다고 가정)
+
+String scalarTypeProjectionQuery = &quot;SELECT m.age FROM Member m&quot;; //Member의 int형 필드 age를 프로젝션&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;br&gt;
+&lt;h3&gt;여러 값을 조회해서 변수에 저장하고 싶으면?&lt;/h3&gt;
+&lt;p&gt;받아오고 싶은 값들을 가지고 있는 DTO 클래스를 따로 만들어 new 키워드를 사용해 객체 생성해서 받아온다. &lt;br&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;String query = &quot;SELECT new package.directory.MemberDTO(m.username, m.age) FROM Member m&quot;;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;Query 안에서 new로 객체를 생성할 때 패키지 명을 포함하여 클래스 명을 입력&lt;/li&gt;
+&lt;li&gt;DTO 클래스는 순서, 타입이 일치하는 생성자를 꼭 생성&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;
+&lt;h2&gt;페이징 API&lt;/h2&gt;
+&lt;p&gt;JPA는 API로 페이징 기능을 제공&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;setFirstResult(int 시작 인덱스)&lt;/li&gt;
+&lt;li&gt;setMaxResult(int 조회할 데이터 수)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;각 SQL 방언에 맞춰 페이징을 생성하는 SQL이 실행된다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;List&amp;lt;Member&gt; resultList = entityManager.createQuery(&quot;SELECT m from Member m order by m.age desc&quot;, Mamber.class).setFirstResult(0).setMaxResult(10).getResultList();&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h2&gt;조인&lt;/h2&gt;
+&lt;p&gt;JPA는 조인할 때 엔티티들의 연관관계를 가지고 조인을 해준다. (세타 조인 제외)&lt;br&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;내부 조인 (Inner Join)
+기준 테이블과 조인할 테이블이 모두 매핑되는 데이터들만 선택해서 조회&lt;br&gt;
+하나라도 매핑되지 않는 데이터는 조회되지 않는다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;```
+String query = &quot;SELECT m FROM Member m INNER JOIN m.team t&quot;;
+//INNER는 생략가능
+//Member와 Team이 연관관계를 가지고 있다고 가정, member에는 team의 참조 필드가 있음.
+```&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+  &lt;br&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;외부 조인 (LEFT Outer Join)
+기준 테이블과 Join할 테이블의 연관되는 필드가 매핑되지 않아도, 조인할 테이블의 연관되는 필드를 null로 유지하며 기준 테이블 기준으로 데이터들이 조회 (RIGHT는 그 반대) (FULL은 두 테이블의 연관되는 필드에 데이터가 하나라도 존재하면 모두 조회)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;```
+String query = &quot;SELECT m FROM Member m LEFT OUTER JOIN m.team t&quot;;
+//OUTER는 생략가능
+```  &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+  &lt;br&gt;
+&lt;ol start=&quot;3&quot;&gt;
+&lt;li&gt;세타 조인
+연관관계 없이 모두 크로스 조인하므로, where로 조인 조건 직접 명시&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;```
+String query = &quot;SELECT m FROM Member m, Team t where m.name = t.name&quot;;
+//연관관계를 기준으로 매핑되지 않으므로, 조인 조건을 where절로 직접 명시
+```&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;on&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;조인 대상 필터링&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;String query = &quot;SELECT m FROM Member m LEFT JOIN m.team t on t.name = &quot;kim&quot;;
+//member와 team을 조인하면서, team의 name이 &quot;kim&quot;인 대상만 조회&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;연관관계 없는 엔티티 외부 조인&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;//Member와 Team이 연관관계가 없다고 가정
+String query = &quot;SELECT m FROM Member m LEFT JOIN TEAM t on m.name = t.name&quot;;
+//참고 : where와 유사하지만 차이가 있음.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Join에서의 On과 Where의 차이
+On : On조건으로 필터링 된 레코드들간의 Join
+Where : 우선 Join을 한 후, Where절로 필터링&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;서브 쿼리&lt;/h2&gt;
+&lt;h3&gt;서브 쿼리를 지원하는 키워드&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;EXIST (Subquery) : 서브 쿼리에 결과가 존재하면 참 &lt;br&gt;&lt;/li&gt;
+&lt;li&gt;ALL|ANY|SOME (Subquery) : All은 서브 워리 결과가 모두 만족하면 참, ANY, SOME은 서브 쿼리 결과가 하나라도 만족하면 참&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;IN (Subquery) : 서브 쿼리 결과에 하나라도 같은 것이 있으면 참&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;member m WHERE EXISTS (&quot;SELECT t FROM m.team t WHERE t.name = &quot;TeamA&quot;); //멤버 m의 team 이름이 &quot;TeamA&quot;이면 WHERE절이 참이 되므로, &quot;TeamA&quot; 소속인 Member가 조회
+
+String query2 = SELECT o FROM Order o WHERE o.orderAmount &gt; ALL(&quot;SELECT p.stockAmount FROM Product p&quot;); //Order의 orderAmount가 전체 Product의 각각의 stockAmount보다 많은 Order을 조회 
+
+String query3 = SELECT m from Member m WHERE m.team = ANY(&quot;SELECT t FROM Team t&quot;); //Member가 어떤 Team에 소속되어 있으면 조회&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;서브 쿼리 예시&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;h3&gt;지원 여부&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;JPA는 WHERE, HAVING 절 서브 쿼리 가능&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;하이버네이트는 SELECT, WHERE, HAVING절 서브 쿼리 가능&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;하이버네이트 6부터는 FROM절 서브쿼리 가능&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;JPQL 타입 표현&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;문자는 &apos;&apos;로 감싼다.&lt;/li&gt;
+&lt;li&gt;숫자는 L,D,F를 숫자 뒤에 명시&lt;/li&gt;
+&lt;li&gt;ENUM은 패키지명 포함해서 사용한다.&lt;/li&gt;
+&lt;li&gt;엔티티 타입은 type(쿼리 안의 부모 엔티티 별칭) = 자식 엔티티 이름 (보통 상속 관계에서 사용)&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;String query = &quot;select m.username From Member m where m.type = jqpl.MemberType.ADMIN; //ADMIN이라는 ENUM을 사용할 때 패키지명 포함해서 사용
+//SetParameter로 :를 사용해 enum을 매개변수로 넘길 때는 사용 안해도 됨&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;3번 예시&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;String query = &quot;select i from Item i where type(i) = Book&quot;;  &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;4번 예시&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;h2&gt;조건식 CASE&lt;/h2&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;String query = &quot;select &quot; + 
+                &quot;case when m.age &amp;lt;= 10 then &apos;학생 요금&apos;
+                   when m.age &gt;= 60 then &apos;경로요금&apos;
+                     else &apos;일반요금&apos; end &quot; + &quot;from Member m&quot;;
+//꼭 end로 끝내기&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;blockquote&gt;
+&lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+&lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/ORM-JPA-Basic&quot;&gt;https://www.inflearn.com/course/ORM-JPA-Basic&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content:encoded></item><item><title><![CDATA[JPQL 객체지향 쿼리 언어 소개]]></title><description><![CDATA[객체지향 쿼리 언어(JPQL) JPQL이란? Java Persistence Query Language
+
+JPA가 SQL를 추상화한 객체 지향 쿼리 언어
+(마지막에는 실제 SQL로 매핑되어 실행된다.) SQL과의 차이점 DB 테이블 대상으로 Query…]]></description><link>https://ms0828.github.io/jpql_객체지향 쿼리 언어/</link><guid isPermaLink="false">https://ms0828.github.io/jpql_객체지향 쿼리 언어/</guid><pubDate>Wed, 20 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h1&gt;객체지향 쿼리 언어(JPQL)&lt;/h1&gt;
+&lt;h3&gt;JPQL이란?&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Java Persistence Query Language&lt;/strong&gt;
+&lt;br&gt;
+JPA가 SQL를 추상화한 객체 지향 쿼리 언어&lt;br&gt;
+(마지막에는 실제 SQL로 매핑되어 실행된다.)&lt;/p&gt;
+&lt;h3&gt;SQL과의 차이점&lt;/h3&gt;
+&lt;p&gt;DB 테이블 대상으로 Query를 날리는 SQL과 다르게,
+&lt;strong&gt;JPQL은 Entity를 대상으로 Query&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;JPQL 장점&lt;/h3&gt;
+&lt;p&gt; 객체(엔티티) 지향 중심으로 개발이 가능하다. (특정 DB SQL에 의존하지 않는다.)&lt;/p&gt;
+&lt;br&gt;
+&lt;!-- &gt; 위와 같은 Query가 실행되면, EntityManager는 Query 실행 전에 flush를 실행하고 Query를 실행한다. (내부 동작 알아두기)
+ --&gt;
+&lt;h2&gt;JPQL 문법&lt;/h2&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 440px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/ace739406d6d52ff8ecdd55ebef43490/7c5f7/image.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 83.52941176470588%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAARCAYAAADdRIy+AAAACXBIWXMAABJ0AAASdAHeZh94AAACHklEQVR42p1U2XLaQBDU//9REieVVFwxAmRROtCFhO5bIMDcR3t2Aw4PeUBW1Wprr97p6Z4VoihCEARIswxFWcAwDMznc7TtAsvlEqvV6uHWti0ESZIgSUNYtoWSAHVdx3q9JtAWu90OXb7j8QjhcDjQ4Rl0VcHYtDGbzaCpKvwg5Jsul0s3wP1+j6ap4bou4jhBWZVwbBt13XwOkP2yNCWqGlg+szTBS0/sDHYX4QGLRUtgIbK8QJ5nFF1NQoXYbDbdAdkvTWIooxF0w8KYRCmLAr+fnykVs06RfojS1BXl0ENK1H1/CtuZ4G39BlEU0cweB/0b4emEKJhCH5sIAx/OxIE39RGFIV5lGRXR7wbIRYkgyyMYpgXLNLkff/38gTBOu1PeM8pkmziKyTYxJpMJp14UOa+a8+UTosRRAFUbYzjoYzBkVWMjz1J8+/oF6+3hGuWDgNvtFufzGSfKJesZPbZwPB4+xv8oX/5L/zbHAW/1eiZANs2AmfL3m3m7A9/SGXbZ7UJcz7E3QLAMDZqmYyD2eM6mnkuKG2CRN02DJEmgKgqkwQAj8mpB5u/1+jDHOh/L1FjemUOenr5DcEwDrjeF53moqpp6F/PFkgOyG9lGm3Iako2KPIfjOLxEo5AaCVmWJReT5b2qKgiK/EoG7mNIzxhb0DQVLQGycmQ1LtPTJvb7UOkFYmXJvDnW1Wt0Co8u8H38eenxUn0HAU4QOCuwXCoAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;&amp;quot;JPQL 기본 틀&amp;quot;&apos; title=&apos;&apos; src=&apos;/static/ace739406d6d52ff8ecdd55ebef43490/7c5f7/image.png&apos; srcset=&apos;/static/ace739406d6d52ff8ecdd55ebef43490/e7570/image.png 170w,
+/static/ace739406d6d52ff8ecdd55ebef43490/f46e7/image.png 340w,
+/static/ace739406d6d52ff8ecdd55ebef43490/7c5f7/image.png 440w&apos; sizes=&apos;(max-width: 440px) 100vw, 440px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;&amp;quot;JPQL 기본 틀&amp;quot;&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;// Member라는 Entity가 있을 때
+&quot;select m from Member as m where m.age &gt; 18&quot;
+//m은 Rename&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;Entity와 속성(엔티티 필드)은 대소문자 구분&lt;/li&gt;
+&lt;li&gt;Query는 대소문자 구분하지 않음 (SELECT, WHERE...)&lt;/li&gt;
+&lt;li&gt;테이블 이름이 아닌 Entity 이름으로 Query&lt;/li&gt;
+&lt;li&gt;Rename 필수 (위 예시에서 &quot;m&quot;, as는 생략 가능)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;
+&lt;h2&gt;집합과 정렬&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;SQL의 GROUP BY, HAVING, ORDER BY 문법 사용 가능&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;DB의 Aggregation Function 사용가능&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;select COUNT(m), SUM(m), AVG(m), MAX(m)...&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;
+&lt;h2&gt;TypeQuery, Query&lt;/h2&gt;
+&lt;p&gt;TypeQuery : 반환 타입이 명확할 때
+Query : 반환 타입이 명확하지 않을 때&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;TypeQuery&amp;lt;Member&gt; typeQuery = entityManager.createQuery(&quot;SELECT m FROM Member m&quot;, Member.class);
+// m이 Entity(Member의 Rename)을 뜻함, 이럴 때 TypeQuery 사용
+
+Query query = entityManager.createQuery(&quot;SELECT m.name FROM Member m&quot;);
+// m.name은 Entity를 뜻하지 않음, 이럴 때 Query 사용&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;br&gt;
+&lt;h2&gt;결과 조회 API&lt;/h2&gt;
+&lt;p&gt;getResultList() : 결과가 하나 이상일 때 리스트 반환&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;결과가 없으면 빈 리스트 반환&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;getSingleResult() : 결과가 하나일 때, 해당 Entity 반환&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;결과가 없으면 NoResultException, 둘 이상이면 NonUniqueResultException 예외 발생&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;// 위와 같은 코드가 있을 때
+// query와 typeQuery필드 대상으로
+
+List&amp;lt;Member&gt; result = typeQuery.getResultList();
+//getResultList() or getSingleResult()...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;br&gt;
+&lt;h2&gt;파라미터 바인딩&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;:name&lt;/strong&gt; / &lt;strong&gt;query.setParameter(name, value)&lt;/strong&gt;
+&lt;br&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;TypeQuery&amp;lt;Member&gt; query = entityManager.createQuery(&quot;select m from Member m where m.name = :username&quot;, Member.class);
+//위에 :username 주목 (이름을 기준으로 한 파라미터 바인딩)
+
+query.setParameter(&quot;username&quot;, &quot;member1&quot;);
+//위 query의 username을 member1로 지정 설정
+
+//보통 Query생성문과 setParameter와 getSingleResult 모두 메서드 체인으로 묶어서 한 번에 씀&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h2&gt;JPQL과 함께 쓰이는 라이브러리들 소개&lt;/h2&gt;
+&lt;h3&gt;QueryDSL&lt;/h3&gt;
+&lt;p&gt;JPQL을 작성할 때, 매개변수로 쿼리를 문자열로 작성해야한다. 이는 오타나 컴파일 오류를 잡기 어렵다는 단점이 있었다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;이를 해결하기 위해 등장한 것이 자바 표준에서 제공하는 Criteria이다. Criteria를 사용하면 쿼리를 함수나 변수를 이용해 자바 코드로 작성할 수 있는 장점이 있지만 Criteria는 복잡하고 어려워서 실제로 잘 쓰이지 않는다. &lt;br&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;이를 대체하기 위해 등장한 오픈소스 라이브러리 QueryDSL이다.&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;JPQL 빌더 역할&lt;/li&gt;
+&lt;li&gt;자바코드로 JPQL을 작성할 수 있음&lt;/li&gt;
+&lt;li&gt;동적으로 Query를 작성하기 쉬움&lt;/li&gt;
+&lt;li&gt;컴파일 시점에 문법 오류 찾기 가능&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;h3&gt;Native SQL&lt;/h3&gt;
+&lt;p&gt;JPA에서 다루지 못하는 Query를 특정 관계형 DB에 의존적인 실제 SQL를 작성할 수 있게 해준다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;entityManager.createNativeQuery(&quot;네이티브 SQL 문&quot;)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;blockquote&gt;
+&lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+&lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/ORM-JPA-Basic&quot;&gt;https://www.inflearn.com/course/ORM-JPA-Basic&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content:encoded></item><item><title><![CDATA[JPA 값 타입]]></title><description><![CDATA[JPA 값 타입 JPA의 데이터 타입 엔티티 타입
+@Entity로 정의하는 객체
+식별자가 있다.생명 주기 관리를 가진다. 값 타입
+int,Integer,String…]]></description><link>https://ms0828.github.io/jpa_값 타입/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_값 타입/</guid><pubDate>Tue, 19 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;JPA 값 타입&lt;/h1&gt;
+&lt;br&gt;
+&lt;h3&gt;JPA의 데이터 타입&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;엔티티 타입&lt;br&gt;
+@Entity로 정의하는 객체&lt;br&gt;
+식별자가 있다.&lt;br&gt;생명 주기 관리를 가진다.&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;값 타입&lt;br&gt;
+int,Integer,String처럼 단순히 값으로 사용되는 자바 기본 타입&lt;br&gt;
+식별자가 없다.&lt;br&gt;생명주기를 엔티티에 의존한다.&lt;br&gt;공유하지 않는 것이 안전하다.&lt;br&gt;불변 객체로 만드는 것이 안전하다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;기본 값 타입(자바에서 제공하는 기본 primitive Type) (값 복사 메커니즘으로 인한 공유 불가)&lt;/li&gt;
+&lt;li&gt;임베디드 타입&lt;/li&gt;
+&lt;li&gt;컬렉션 값 타입&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h2&gt;임베디드 타입&lt;/h2&gt;
+&lt;p&gt;기본 값 타입을 모아서 만든 복합 값 타입 (사용자가 직접 정의한 타입)&lt;/p&gt;
+&lt;br&gt;
+&lt;p&gt;그럼 JPA가 이런 값을 테이블에 매핑할 때는 어떻게?&lt;/p&gt;
+&lt;p&gt;정의한 타입(클래스)에 @Embeddable을 표시하고,
+사용하는 곳에 @Embedded를 표시&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;기본 생성자 필수&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;@Embeddable
+public class Period{
+
+  public Period(){
+    //기본 생성자 필수
+  }
+  private LocalDateTime startDate;
+  private LocalDateTime endDate;
+
+  /*사용자가 기본 값 타입을 묶어 직접 정의한 클래스(임베디드 값 타입)*/
+
+}
+
+@Entity
+public class Member{
+  
+  //...
+  @Embedded private Period perid   
+  //...
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;임베디드 타입을 포함한 모든 값 타입은, 소유자 Entity에 생명주기를 의존&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;실제 테이블에 어떤 변화가 일어나지는 않는다. 대신 임베디드 값 타입을 사용하면 사용자가 개발 시점에 객체지향적으로 개발할 수 있다는 장점이 있다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Tip : 잘 설계한 ORM Application은 매핑한 테이블 수보다 클래스 수가 더 많다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h3&gt;한 Entity에서 같은 값 타입을 사용하면?&lt;/h3&gt;
+&lt;p&gt;컬럼 명이 중복되기 때문에 그냥 사용은 못한다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;AttributeOverrides, AttributeOverride를 사용해서 컬럼 명을 재정의&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;사용법은 공식문서 참고&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h2&gt;불변 객체&lt;/h2&gt;
+&lt;h3&gt;값 타입 공유 참조의 문제&lt;/h3&gt;
+&lt;p&gt;임베디드 값 타입 같은 &lt;strong&gt;레퍼런스&lt;/strong&gt;를 여러 Entity가 공유할 때 주의 (primitive Type이 아닌 reference Type에 대한 주의점)&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;관련된 테이블의 임베디드 값의 필드가 모두 바뀐다. &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;h3&gt;Reference 형식의 값 타입은 불변 객체로&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;불변 객체&lt;/strong&gt;&lt;br&gt;
+위 문제점을 원천에 차단하는 객체,&lt;br&gt;
+생성 시점 이후 절대 값을 변경할 수 없는 객체&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Setter가 없는 객체&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;값 타입은 불변 객체로 설계해야함&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h3&gt;Reference Type의 값 비교&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;동일성 비교(인스턴스의 참조 값을 비교) (==)&lt;/li&gt;
+&lt;li&gt;동등성 비교(인스턴스의 값 비교) (equlas(), hashCode() 재정의해서 사용)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h2&gt;값 타입 컬렉션&lt;/h2&gt;
+&lt;p&gt;Ex: List &amp;#x3C; String &gt;
+&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;컬렉션은 관계형 DB에 어떻게 매핑하여 저장하는가?&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;해당 Entity의 PK값과 값 타입 필드를 모두 PK로 묶어 별도의 테이블에 다대일 관계로 풀어낸다. &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;p&gt;Jpa로 매핑하는 방법&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;//...
+@ElementCollection
+@CollectionTable(name = &quot;별도로 생성할 테이블 이름&quot;, joinColumns = @JoinColumn(name = &quot;해당 Entity의 PK 필드명&quot;))
+@Column(name = &quot;별도 테이블에 저장할 Column 이름&quot;)
+private Set&amp;lt;String&gt; myHashSet = new HashSet&amp;lt;&gt;();
+
+
+@ElementCollection
+@CollectionTable(name = &quot;tableName&quot;, joinColumns = @JoinColumn(name = &quot;해당 Entity의 PK 필드명&quot;))
+private List&amp;lt;임베디드 값 타입&gt; myList = new ArrayList&amp;lt;&gt;();
+
+//...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;이렇게 생성된 별도의 테이블이 &apos;다&apos;, 기존의 Entity가 &apos;일&apos; 관계이고, 별도의 테이블이 기존의 Entity를 가리키는 단방향 연관관계로 풀어냄&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;값 타입 컬렉션을 따로 persist 하지 않아도 JPA가 영속상태로 처리&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;이유는 값 타입은 모두 종속 Entity에 생명주기를 의존하기 때문이다. (영속성전이 + 고아객체 기능을 가진다.)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;값 타입 컬렉션은 지연로딩으로 설정됨&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h3&gt;값 타입 수정&lt;/h3&gt;
+&lt;p&gt;ReferenceType의 경우, Setter로 값을 수정하지말고, 완전히 새로운 값을 만들어 교체해야 한다.&lt;/p&gt;
+&lt;br&gt;
+&lt;h3&gt;값 타입 컬렉션 수정&lt;/h3&gt;
+&lt;p&gt;컬렉션에 Remove()를 이용해서 기존의 값을 지우고, add()로 새로 추가해야한다. &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;값 타입 컬렉션에 변경 사항이 생기면, 해당 Entity와 연관된 모든 데이터를 삭제하고, 현재 값 타입 컬렉션에 있는 값으로 모두 insert해 저장한다. 이러한 이유로 값 타입 컬렉션은 권장되지 않음&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+따라서 이러한 문제의 대안으로 컬렉션 대신에 값 타입을 담은 별도의 Entity를 만들고 여기에 일대다 단방향 관계를 풀어내서 사용한다.
+&lt;br&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;//...
+@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+@JoinColumn(name = &quot;매핑할 Entity의 PK&quot;)
+private List&amp;lt;컬렉션을 대체하기 위해 만든 Entity&gt; entityList = new ArrayList&amp;lt;&gt;();
+//...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;특정 Entity에 속해 있는 값 타입은 따로 persis하지 않아도 영속성 상태로 관리된다. (영속성 전이)&lt;/li&gt;
+&lt;li&gt;값 타입 컬렉션과 매핑되는 테이블은 모든 Column을 묶어 PK로 두기 때문에, null이나 중복저장이 안된다.&lt;/li&gt;
+&lt;li&gt;값 타입 컬렉션은 DB에서 data에 대한 추적이 어렵기 때문에 권장되지 않는다.&lt;/li&gt;
+&lt;li&gt;값 타입은 변경이 어렵다. &lt;/li&gt;
+&lt;li&gt;식별자가 필요하고, 지속해서 값을 추적하고 변경해야하면 값 타입이 아닌 Entity를 사용해야 한다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;blockquote&gt;
+&lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+&lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/ORM-JPA-Basic&quot;&gt;https://www.inflearn.com/course/ORM-JPA-Basic&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content:encoded></item><item><title><![CDATA[JPA 프록시와 연관관계 관리]]></title><description><![CDATA[프록시 em.getReference();    //가짜(프록시) Entity를 조회 (DB에 접근X) em.find()와 다르게 조회할 때 Query 실행이 되지 않고, 조회한 가짜(프록시) Entity를 사용할 때 Query가 나감 (Query…]]></description><link>https://ms0828.github.io/jpa_프록시와 연관관계 관리/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_프록시와 연관관계 관리/</guid><pubDate>Mon, 18 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;프록시&lt;/h1&gt;
+&lt;p&gt;em.getReference();    //가짜(프록시) Entity를 조회 (DB에 접근X)&lt;/p&gt;
+&lt;p&gt;em.find()와 다르게 조회할 때 Query 실행이 되지 않고, 조회한 가짜(프록시) Entity를 &lt;strong&gt;사용할 때&lt;/strong&gt; Query가 나감 (Query가 지연된다.)&lt;/p&gt;
+&lt;p&gt;이렇게 조회되는 프록시는 값을 찾을 Id만 가져오고, 실제 Entity의 다른 필드(DB에 저장되어있는)를 조회하거나 프록시 객체를 호출하면 select Query가 실행됨(실제 객체 메소드 호출)&lt;/p&gt;
+&lt;p&gt;프록시의 특징
+4번 째 : 반대도 성립 -&gt; 먼저 프록시를 반환해서 영속성 컨텍스트에 프록시가 있으면, 이후에 find 해도 프록시를 반환함
+5번이 중요&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;프록시를 가져오고, 실제 프록시가 초기화(값을 조회한다던가) 되기 전에 영속성 컨텍스트가 close or clear되거나 프록시 객체가 detach 되면?  프록시의 초기화는 영속성 컨텍스트에 요청하기 때문에 이는 초기화 불가&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;프록시 객체 초기화 확인 문법 바뀜
+emf.getPersistenceUnitUtil().isLoaded(프록시 객체)&lt;/p&gt;
+&lt;p&gt;클래스 확인 방법
+프록시객체.getClass()&lt;/p&gt;
+&lt;p&gt;강체 초기화 기능은 하이버네이트 기능 (JPA표준은 강제 초기화 기능 없음)&lt;/p&gt;
+&lt;h1&gt;지연로딩과 즉시로딩&lt;/h1&gt;
+&lt;p&gt;시나리오 &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Member와 연관되어 있는 Team이 있다.&lt;/li&gt;
+&lt;li&gt;Member를 사용할 때, Team을 사용하는 일이 거의 없다고 하자.&lt;/li&gt;
+&lt;li&gt;Member를 가져올 때, 항상 Team을 조회하는 것이 비효율적일 수도 있다.&lt;/li&gt;
+&lt;li&gt;지연로딩을 이용하자.  (fetch = FetchType.LAZY)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;-&gt; 이 Entity와 연관된 객체는 프록시로 불러옴
+나중에 연관된 객체 &lt;strong&gt;사용&lt;/strong&gt;할 때, 프록시 초기화(select query 실행)&lt;/p&gt;
+&lt;p&gt;시나리오 &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Member와 연관되어 있는 Team이 있다.&lt;/li&gt;
+&lt;li&gt;Member를 사용할 때, 거의 Team도 함께 사용하게 된다.&lt;/li&gt;
+&lt;li&gt;Member를 가져올 때, Team을 같이 가져오는 것이 효율적이다.&lt;/li&gt;
+&lt;li&gt;즉시로딩을 이용하자.  (fetch = FetchType.EAGER)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;-&gt; 연관된 객체를 프록시로 가져오지 않고, 실제 DB에서 가져온다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2&gt;가급적 지연로딩만 사용&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;즉시로딩을 사용하면, 예상하지 못한 SQL이 발생&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;최적화 관점에서 유지보수 할 때, 파악하기 어렵다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;즉시로딩은 JPQL에서 N+1 문제를 일으킨다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;관련된 객체를 가져오기 위해 별도의 Query가 한번 더 실행된다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;@ManyToOne, @OneToOne는 기본 값이 즉시로딩&lt;/li&gt;
+&lt;li&gt;@OneToMnay, @ManyToMany는 기본 값이 지연로딩&lt;/li&gt;
+&lt;li&gt;Tip : 일단 지연로딩으로 설정하고, 필요할 때 JPQL에서 &apos;join fetch&apos;를 사용하자&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;영속성 전이 CASCADE&lt;/h2&gt;
+&lt;p&gt;부모 Entity를 영속성으로 관리할 때, 연관된 Entity도 모두 영속성 관리 상태로 만들고 싶을 때&lt;/p&gt;
+&lt;p&gt;기존&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;Child child1 = new Child();
+Child child2 = new Child();
+
+Parent parent = new Parent();
+parent.addChild(child1);
+parent.addChild(child2);
+
+em.persist(child1);
+em.persist(child2);
+em.persist(parent);&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Cascade 적용&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;public class Parent{
+  
+  //...
+  
+  @OneToMany(mappedBy = &quot;parent&quot;, cascade = CascadeType.ALL)
+  private List&amp;lt;Child&gt; childList = new ArrayList();
+
+  //...
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Cascade를 적용하면, Parent만 persist해도 Child(연관된 Entity)까지 모두 persis된다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;영속성 전이(CASCADE)는 연관관계 매핑과 관련이 없다.&lt;/li&gt;
+&lt;li&gt;Entity를 영속화할 때, 연관된 Entity도 함께 영속화하는 편리함을 제공할 뿐이다.&lt;/li&gt;
+&lt;li&gt;영속성 전이는 소유자가 하나일 때만(Child가 Parent에만 종속관계가 있을 때) 사용해야 한다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h2&gt;고아 객체&lt;/h2&gt;
+&lt;p&gt;부모 Entity와 연관관계가 끊어진 자식 Entity를 자동으로 삭제&lt;br&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;//...
+Parent parent = em.find(Parent.class, id);
+parent.getChildren().remove(0);     //자식 Entity를 컬렉션에서 제거
+//...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;자식 Entity 대상으로 delete Query가 실행된다.&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;매핑관련 어노테이션의 속성으로 사용&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;//...
+@OneToMany(mappedBy = &quot;parent&quot;, cascade = CascadeType.ALL, orphanRemoval = true)
+//...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CASCADE와 마찬가지로 단일 소유자 관계에서만 사용&lt;/li&gt;
+&lt;li&gt;@OneToOne, @OneToMnay만 가능&lt;/li&gt;
+&lt;li&gt;CascadeType.REMOVE와 유사&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;blockquote&gt;
+&lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+&lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/ORM-JPA-Basic&quot;&gt;https://www.inflearn.com/course/ORM-JPA-Basic&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content:encoded></item><item><title><![CDATA[JPA 상속관계 매핑]]></title><description><![CDATA[상속관계 매핑 객체의 상속관계를 관계형 DB에서는 슈퍼타입, 서브타입의 논리적 모델 설계가 가능하고, 이를 물리적 모델로 설계하는 방법은 3가지
+Jpa는 3가지 매핑 방법을 모두 지원 객체의 상속관계를 Jpa…]]></description><link>https://ms0828.github.io/jpa_상속관계 매핑/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_상속관계 매핑/</guid><pubDate>Mon, 18 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;상속관계 매핑&lt;/h1&gt;
+&lt;p&gt;객체의 상속관계를 관계형 DB에서는 슈퍼타입, 서브타입의 논리적 모델 설계가 가능하고, 이를 물리적 모델로 설계하는 방법은 3가지
+Jpa는 3가지 매핑 방법을 모두 지원&lt;/p&gt;
+&lt;p&gt;객체의 상속관계를 Jpa가 기본적으로 단일 테이블 방법으로 매핑함
+@Inheritance(strategy = InheritanceType.JOINED) 이런 식으로 전략 바꿀 수 있음
+Joined 전략은 db저장 시 부모 테이블, 자식 테이블 Insert Query가 두 번 나감
+조회 시, 두 테이블을 Join 해서 가져온다&lt;/p&gt;
+&lt;p&gt;여기까지는 DType Column을 유지하지 않는데,
+부모 클래스에
+@DiscriminatorColumn을 적으면 테이블에서 DType을 유지한다.
+(단일 테이블 전략에는 DiscriminatorColumn을 생략해도 DType이 자동 생성됨)&lt;/p&gt;
+&lt;p&gt;자식 클래스에
+@DiscriminatorValue(&quot;이름&quot;) 설정하면, 자식들의 DType의 값을 설정한 이름으로 유지한다. &lt;/p&gt;
+&lt;p&gt;TABLE&lt;em&gt;PER&lt;/em&gt;CLASS 전략은 부모 클래스를 abstract 클래스로 만들어야 한다. (안그러면 부모 클래스도 테이블이 생김)
+이 전략은 부모 클래스를 이용해 조회할 때, union을 사용해 자식 클래스 모두를 탐색하기 때문에 비효율적이다. (권장되지 않는 방식)&lt;/p&gt;
+&lt;p&gt;Join전략이 가장 권장되는 방식&lt;/p&gt;
+&lt;h2&gt;MappedSuperclass&lt;/h2&gt;
+&lt;p&gt;매핑 정보 상속 - 공통 매핑 정보가 필요할 때 사용
+단순 엔티티간에 공통 정보를 상속받아 사용할 때 사용
+객체 레벨에서 사용함/ DB는 영향X (상속 관계 매핑 X)&lt;/p&gt;
+&lt;p&gt;(객체지향적 관점에서의 상속이 아님, 단순 공통 정보를 상속 받을 때)
+부모 클래스에 @MappedSuperclass를 적는다.&lt;/p&gt;
+&lt;p&gt;결과 - 관계형 DB에서 각 테이블에 상속받은 공통 정보 필드가 새로 생긴다.&lt;/p&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;blockquote&gt;
+&lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+&lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/ORM-JPA-Basic&quot;&gt;https://www.inflearn.com/course/ORM-JPA-Basic&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content:encoded></item><item><title><![CDATA[JPA 연관관계 매핑 2]]></title><description><![CDATA[다양한 연관관계 이 포스팅은 앞에 "연관관계 매핑 1" 포스팅 시나리오를 기반으로 요약한 글
+ 연관관계 매핑시 고려사항 다중성 (다대일, 일대다) 단방향, 양방향 연관관계 주인
+ 다대일 N:1 @ManyToOne…]]></description><link>https://ms0828.github.io/jpa_연관관계 매핑2/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_연관관계 매핑2/</guid><pubDate>Sun, 17 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;다양한 연관관계&lt;/h1&gt;
 &lt;br&gt;
 &lt;ul&gt;
 &lt;li&gt;이 포스팅은 앞에 &quot;연관관계 매핑 1&quot; 포스팅 시나리오를 기반으로 요약한 글
@@ -126,13 +1256,12 @@ public class Team{
 &lt;blockquote&gt;
 &lt;p&gt;이를 해결하려면, 연결 테이블용 Entity를 따로 추가해서 객체 레벨에서 일대다, 다대일 관계로 풀어내야 한다.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;br&gt;</content:encoded></item><item><title><![CDATA[JPA 연관관계 매핑 1]]></title><description><![CDATA[연관관계 매핑 본 블로그는 인프런 '김영한'님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
-출처  https://www.inflearn.com/course/ORM-JPA-Basic…]]></description><link>https://ms0828.github.io/jpa_연관관계 매핑/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_연관관계 매핑/</guid><pubDate>Sat, 16 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;연관관계 매핑&lt;/h1&gt;
+&lt;br&gt;
+&lt;br&gt;
 &lt;blockquote&gt;
 &lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
 &lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/ORM-JPA-Basic&quot;&gt;https://www.inflearn.com/course/ORM-JPA-Basic&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;br&gt;
+&lt;/blockquote&gt;</content:encoded></item><item><title><![CDATA[JPA 연관관계 매핑 1]]></title><description><![CDATA[연관관계 매핑 요약을 위한 예제 Member와 Team이 있다. Member는 하나의 Team에만 소속될 수 있다. Member와 Team은 다대일 단방향 관계이다. (하나의 Team에 다수의 Member…]]></description><link>https://ms0828.github.io/jpa_연관관계 매핑/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_연관관계 매핑/</guid><pubDate>Sat, 16 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;연관관계 매핑&lt;/h1&gt;
 &lt;br&gt;
 &lt;h3&gt;요약을 위한 예제&lt;/h3&gt;
 &lt;ul&gt;
@@ -304,13 +1433,13 @@ for(Member m : members){
 &lt;ul&gt;
 &lt;li&gt;우선 단방향으로 모두 설계하고, 나중에 필요할 때 객체에서의 양방향 관계만 추가하면 된다. (추가해도 테이블에는 영향을 미치지 않는다.)&lt;/li&gt;
 &lt;li&gt;외래 키를 갖고 있는 객체를 기준으로 연관관계 주인을 설정한다.&lt;/li&gt;
-&lt;/ul&gt;</content:encoded></item><item><title><![CDATA[JPA 엔티티 매핑]]></title><description><![CDATA[객체와 테이블 매핑 본 블로그는 인프런 '김영한'님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
-출처  https://www.inflearn.com/course/ORM-JPA-Basic…]]></description><link>https://ms0828.github.io/jpa_엔티티매핑/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_엔티티매핑/</guid><pubDate>Thu, 14 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;객체와 테이블 매핑&lt;/h2&gt;
+&lt;/ul&gt;
+&lt;br&gt;
+&lt;br&gt;
 &lt;blockquote&gt;
 &lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
 &lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/ORM-JPA-Basic&quot;&gt;https://www.inflearn.com/course/ORM-JPA-Basic&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;br&gt;
+&lt;/blockquote&gt;</content:encoded></item><item><title><![CDATA[JPA 엔티티 매핑]]></title><description><![CDATA[객체와 테이블 매핑 @Entity   @Entity가 붙은 클래스는 JPA가 관리하고, 이를 Entity라고 함 JPA를 사용하여 테이블과 매핑할 클래스에 적용 @Table   Entity와 매핑할 테이블을 지정 기본값은 Entity…]]></description><link>https://ms0828.github.io/jpa_엔티티매핑/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_엔티티매핑/</guid><pubDate>Thu, 14 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;객체와 테이블 매핑&lt;/h2&gt;
 &lt;br&gt;
 &lt;h3&gt;@Entity&lt;br&gt;&lt;/h3&gt;
 &lt;p&gt;  @Entity가 붙은 클래스는 JPA가 관리하고, 이를 Entity라고 함&lt;/p&gt;
@@ -426,13 +1555,13 @@ private Long id;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/ul&gt;
 &lt;blockquote&gt;
 &lt;p&gt;이 전략을 사용하면, 사용하는 데이터베이스에 시퀀스가 생성되고 관리된다.&lt;/p&gt;
-&lt;/blockquote&gt;</content:encoded></item><item><title><![CDATA[JPA 영속성 관리]]></title><description><![CDATA[JPA 내부 동작 원리 본 블로그는 인프런 '김영한'님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
-출처  https://www.inflearn.com/course/ORM-JPA-Basic…]]></description><link>https://ms0828.github.io/jpa_영속성관리/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_영속성관리/</guid><pubDate>Thu, 14 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;JPA 내부 동작 원리&lt;/h1&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;br&gt;
 &lt;blockquote&gt;
 &lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
 &lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/ORM-JPA-Basic&quot;&gt;https://www.inflearn.com/course/ORM-JPA-Basic&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;br&gt;
+&lt;/blockquote&gt;</content:encoded></item><item><title><![CDATA[JPA 영속성 관리]]></title><description><![CDATA[JPA 내부 동작 원리 1. Transaction JPA를 이용해서 데이터를 변경하는 작업 위에는 항상 Transaction…]]></description><link>https://ms0828.github.io/jpa_영속성관리/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_영속성관리/</guid><pubDate>Thu, 14 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;JPA 내부 동작 원리&lt;/h1&gt;
 &lt;br&gt;
 &lt;h3&gt;1. Transaction&lt;/h3&gt;
 &lt;ul&gt;
@@ -550,14 +1679,12 @@ System.out.println(a == b); //동일성 보장&lt;/code&gt;&lt;/pre&gt;&lt;/div&
 &lt;li&gt;플러시 실행 시, 영속성 컨텍스트를 비우지 않는다.&lt;/li&gt;
 &lt;li&gt;Transaction 작업 단위에서 실행된다.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;br&gt;</content:encoded></item><item><title><![CDATA[JPA Start]]></title><description><![CDATA[JPA란? (Jpava Persistence API) 본 블로그는 인프런 '김영한'님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
-출처  https://www.inflearn.com…]]></description><link>https://ms0828.github.io/jpa_시작/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_시작/</guid><pubDate>Wed, 13 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;JPA란? (Jpava Persistence API)&lt;/h1&gt;
+&lt;br&gt;
+&lt;br&gt;
 &lt;blockquote&gt;
 &lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
 &lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/ORM-JPA-Basic&quot;&gt;https://www.inflearn.com/course/ORM-JPA-Basic&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;br&gt;
-&lt;br&gt;
+&lt;/blockquote&gt;</content:encoded></item><item><title><![CDATA[JPA Start]]></title><description><![CDATA[JPA란? (Jpava Persistence API) 자바 진영의 ORM 표준 기술 ORM(Object-relational mapping)    객체는 객체대로 설계하고 데이터베이스는 데이터베이스대로 설계 ORM…]]></description><link>https://ms0828.github.io/jpa_시작/</link><guid isPermaLink="false">https://ms0828.github.io/jpa_시작/</guid><pubDate>Wed, 13 Sep 2023 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;JPA란? (Jpava Persistence API)&lt;/h1&gt;
 &lt;h3&gt;자바 진영의 ORM 표준 기술&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;p&gt;ORM(Object-relational mapping) &lt;br&gt;  &lt;/p&gt;
@@ -676,163 +1803,10 @@ System.out.println(a == b); //동일성 보장&lt;/code&gt;&lt;/pre&gt;&lt;/div&
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h5&gt;사용 예제&lt;/h5&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;em.createQuery(&quot;쿼리문&quot;, 객체명.class).getResultList();&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[🤩 4. 그 외 팁들]]></title><description><![CDATA[파비콘은 어떻게 변경하나요?  에 파비콘 파일이 위치해 있습니다. 이미지 파일을 대체하면 파비콘을 변경할 수 있습니다. 만약 파비콘 파일의 이름을 변경하고 싶다면,  파일의  에서  속성을 변경하셔야합니다. Utterance…]]></description><link>https://ms0828.github.io/other-tips-kr/</link><guid isPermaLink="false">https://ms0828.github.io/other-tips-kr/</guid><pubDate>Sun, 04 Apr 2021 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;파비콘은 어떻게 변경하나요?&lt;/h2&gt;
-&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;static/favicon.png&lt;/code&gt; 에 파비콘 파일이 위치해 있습니다. 이미지 파일을 대체하면 파비콘을 변경할 수 있습니다.&lt;/p&gt;
-&lt;p&gt;만약 파비콘 파일의 이름을 변경하고 싶다면, &lt;code class=&quot;language-text&quot;&gt;gatsby-config.js&lt;/code&gt; 파일의 &lt;code class=&quot;language-text&quot;&gt;gatsby-plugin-manifest&lt;/code&gt; 에서 &lt;code class=&quot;language-text&quot;&gt;icon&lt;/code&gt; 속성을 변경하셔야합니다.&lt;/p&gt;
-&lt;h2&gt;Utterance 가 제대로 작동하지 않아요.&lt;/h2&gt;
-&lt;p&gt;http 환경에서는 Utterance 가 제대로 작동하지 않을 수 있습니다. 여러분의 웹사이트를 https 환경으로 제공하세요.&lt;/p&gt;
-&lt;h2&gt;OG Image 를 설정하고 싶어요.&lt;/h2&gt;
-&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;/static&lt;/code&gt; 디렉토리의 &lt;code class=&quot;language-text&quot;&gt;og-image.png&lt;/code&gt; 파일을 여러분이 원하는 이미지 파일로 대체하세요.&lt;/p&gt;
-&lt;h2&gt;다른 질문이 있으신가요?&lt;/h2&gt;
-&lt;p&gt;이 문서에 댓글을 달거나 gatsby-starter-hoodie 레포지토리에 &lt;a href=&quot;https://github.com/devHudi/gatsby-starter-hoodie/issues&quot;&gt;이슈를 열어주세요&lt;/a&gt;. 여러분의 참여가 gatsby-starter-hoodie 를 더욱 발전시킵니다. 감사해요 😎.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[🤔 3. 작성 가이드]]></title><description><![CDATA[1. 포스트 추가하기  경로에 새로운 마크다운 파일을 생성하여 여러분의 글을 추가할 수 있습니다. 1-…]]></description><link>https://ms0828.github.io/writing-guide-kr/</link><guid isPermaLink="false">https://ms0828.github.io/writing-guide-kr/</guid><pubDate>Sat, 03 Apr 2021 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;1. 포스트 추가하기&lt;/h2&gt;
-&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;contents/post&lt;/code&gt; 경로에 새로운 마크다운 파일을 생성하여 여러분의 글을 추가할 수 있습니다.&lt;/p&gt;
-&lt;h3&gt;1-1. 포스트 파일 구조&lt;/h3&gt;
-&lt;p&gt;새로운 문서를 추가하는 방법에는 두가지가 있습니다. 첫번째는 디렉토리 없이 문서를 생성하는 방법입니다. 만약 여러분이 Javascript 에 관한 문서를 생성한다면, &lt;code class=&quot;language-text&quot;&gt;about-javascript.md&lt;/code&gt; 파일을 &lt;code class=&quot;language-text&quot;&gt;contents/posts&lt;/code&gt; 디렉토리에 추가할 수 있습니다.&lt;/p&gt;
-&lt;p&gt;두번째 방법은 먼저 디렉토리를 생성한 뒤, 디렉토리 안에 &lt;code class=&quot;language-text&quot;&gt;index.md&lt;/code&gt; 파일을 추가하는 것 입니다. 이 방법은 문서 내에 여러 이미지 파일 등 부수적인 파일 여러개가 포함되었을 때 유용합니다.&lt;/p&gt;
-&lt;p&gt;첫번째 방법으로 생성한 파일명이나, 두번째 방법으로 생성한 디렉토리 이름은 웹사이트에서 고유의 주소를 갖습니다. &lt;code class=&quot;language-text&quot;&gt;https://siteURL/about-javascript&lt;/code&gt; 와 같이요.&lt;/p&gt;
-&lt;h3&gt;1-2. Frontmatter&lt;/h3&gt;
-&lt;p&gt;마크다운은 문서의 메타데이터인 Frontmatter 라 불리는 정보를 가지고 있습니다.&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;---
-title: &quot;🤔 3. 작성 가이드&quot;
-description: &quot;어떻게 글을 작성하고 추가할까요?&quot;
-date: 2021-04-03
-update: 2021-04-03
-tags:
-  - hoodie
-  - writing-guide
-series: &quot;gatsby-starter-hoodie 로 블로그 시작하기&quot;
----&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;위는 지금 여러분이 읽고 있는 문서의 Frontmatter 입니다. &lt;code class=&quot;language-text&quot;&gt;title&lt;/code&gt; 과 &lt;code class=&quot;language-text&quot;&gt;date&lt;/code&gt; 는 필수 값입니다. 띄어쓰기를 포함된 문자열을 입력할 때에는 따옴표로 감싸는 것을 추천합니다.&lt;/p&gt;
-&lt;h3&gt;1-3. 마크다운 작성하기&lt;/h3&gt;
-&lt;p&gt;만약 Frontmatter 까지 작성했다면, 여러분은 그 아래에 마크다운 문서를 작성하면 됩니다. gatsby-starter-hoodie 는 대부분의 마크다운 문법을 지원합니다. 마크다운 작성 방법을 알고 싶다면, Github 의 &lt;a href=&quot;https://guides.github.com/features/mastering-markdown/&quot;&gt;Mastering Markdown&lt;/a&gt; 문서를 참고하세요.&lt;/p&gt;
-&lt;h2&gt;2. 코드 하이라이팅 &amp;#x26; Katex&lt;/h2&gt;
-&lt;h3&gt;2-1. 코드 하이라이팅&lt;/h3&gt;
-&lt;p&gt;Prism.JS 에 기반한 코드 하이라이팅이 제공됩니다.&lt;/p&gt;
-&lt;h4&gt;예시&lt;/h4&gt;
-&lt;p&gt;Javascript&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;console&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;Hello, world!&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Python&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;python&quot;&gt;&lt;pre class=&quot;language-python&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;Hello, world!&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;그 외 더 많은 언어를 제공합니다. 제공되는 언어를 확인하고 싶다면, &lt;a href=&quot;https://prismjs.com/&quot;&gt;Prism.js 웹사이트&lt;/a&gt; 를 참고하세요.&lt;/p&gt;
-&lt;h3&gt;2-2. Katex&lt;/h3&gt;
-&lt;p&gt;Katex 문법을 지원하여 복잡한 수식도 쉽게 표현할 수 있습니다.&lt;/p&gt;
-&lt;h4&gt;인라인 모드&lt;/h4&gt;
-&lt;p&gt;&lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;E&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;msup&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;E = m c^{2}&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&quot;katex-html&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.68333em;vertical-align:0em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot; style=&quot;margin-right:0.05764em;&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.2777777777777778em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mrel&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.2777777777777778em;&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.8141079999999999em;vertical-align:0em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;msupsub&quot;&gt;&lt;span class=&quot;vlist-t&quot;&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:0.8141079999999999em;&quot;&gt;&lt;span style=&quot;top:-3.063em;margin-right:0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;2&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
-&lt;h4&gt;블럭 모드&lt;/h4&gt;
-&lt;span class=&quot;katex-display&quot;&gt;&lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; display=&quot;block&quot;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;msubsup&gt;&lt;mo&gt;∫&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;mi mathvariant=&quot;normal&quot;&gt;∞&lt;/mi&gt;&lt;/msubsup&gt;&lt;mi&gt;f&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;\int_{0}^{\infty} f(x) dx&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&quot;katex-html&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:2.326242em;vertical-align:-0.9119499999999999em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mop&quot;&gt;&lt;span class=&quot;mop op-symbol large-op&quot; style=&quot;margin-right:0.44445em;position:relative;top:-0.0011249999999999316em;&quot;&gt;∫&lt;/span&gt;&lt;span class=&quot;msupsub&quot;&gt;&lt;span class=&quot;vlist-t vlist-t2&quot;&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:1.414292em;&quot;&gt;&lt;span style=&quot;top:-1.7880500000000001em;margin-left:-0.44445em;margin-right:0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;0&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;top:-3.8129000000000004em;margin-right:0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;∞&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;vlist-s&quot;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:0.9119499999999999em;&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.16666666666666666em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot; style=&quot;margin-right:0.10764em;&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;mopen&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;mclose&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;x&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;
-&lt;h2&gt;3. 글에 이미지 추가하기&lt;/h2&gt;
-&lt;p&gt;상대경로를 이용하여 쉽게 이미지를 추가할 수 있습니다. 디렉토리를 생성하고 그 안에 &lt;code class=&quot;language-text&quot;&gt;index.md&lt;/code&gt; 를 추가하여, 글을 추가하는 방법으로 작성해야 이미지 관리가 쉽습니다.&lt;/p&gt;
-&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
-    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; &apos;&gt;
-      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/69b244095d8c72158c9dd2d4ca59a7b1/aaf92/sample-image.jpg&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
-    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 61.1764705882353%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAMABQDASIAAhEBAxEB/8QAGAAAAgMAAAAAAAAAAAAAAAAAAAQBAgP/xAAVAQEBAAAAAAAAAAAAAAAAAAACAf/aAAwDAQACEAMQAAABUsxAixiE/wD/xAAbEAACAwADAAAAAAAAAAAAAAABAgADBBEiM//aAAgBAQABBQIFOW7ETHWtk0ezWFT/AP/EABURAQEAAAAAAAAAAAAAAAAAABBB/9oACAEDAQE/AYf/xAAXEQADAQAAAAAAAAAAAAAAAAAAAREh/9oACAECAQE/AWsIf//EABkQAAMBAQEAAAAAAAAAAAAAAAABIRECMf/aAAgBAQAGPwJaTWj0fXdaeIkMh//EABoQAQADAQEBAAAAAAAAAAAAAAEAETFRIUH/2gAIAQEAAT8hFdQ6EfUPBjowSgW0YQgXQ9r7FoKHSf/aAAwDAQACAAMAAAAQeN//xAAXEQEAAwAAAAAAAAAAAAAAAAAAAREh/9oACAEDAQE/EJwp/8QAFhEBAQEAAAAAAAAAAAAAAAAAABEh/9oACAECAQE/EIG3/8QAGhABAAMBAQEAAAAAAAAAAAAAAQARITFRQf/aAAgBAQABPxA3pFmq4m2wUjT9WvYy3aVDOTlbQ8O892CBa9ZtcY9TG1n/2Q==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
-  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;샘플 이미지 캡션&apos; title=&apos;&apos; src=&apos;/static/69b244095d8c72158c9dd2d4ca59a7b1/a22ce/sample-image.jpg&apos; srcset=&apos;/static/69b244095d8c72158c9dd2d4ca59a7b1/0b705/sample-image.jpg 170w,
-/static/69b244095d8c72158c9dd2d4ca59a7b1/31389/sample-image.jpg 340w,
-/static/69b244095d8c72158c9dd2d4ca59a7b1/a22ce/sample-image.jpg 680w,
-/static/69b244095d8c72158c9dd2d4ca59a7b1/29373/sample-image.jpg 1020w,
-/static/69b244095d8c72158c9dd2d4ca59a7b1/232dc/sample-image.jpg 1360w,
-/static/69b244095d8c72158c9dd2d4ca59a7b1/aaf92/sample-image.jpg 1920w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
-  &lt;/a&gt;
-    &lt;/span&gt;
-    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;샘플 이미지 캡션&lt;/figcaption&gt;
-  &lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;이미지는 Lazy Loading 으로 로드되어, 빠른 초기 문서 로딩 속도를 확보할 수 있습니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;em.createQuery(&quot;쿼리문&quot;, 객체명.class).getResultList();&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;br&gt;
+&lt;br&gt;
 &lt;blockquote&gt;
-&lt;p&gt;⚠ 이미지의 모든 확장자는 소문자여야합니다.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2&gt;4. 태그&lt;/h2&gt;
-&lt;p&gt;&lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; margin-bottom: 16px;&apos;&gt;
-      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/82ce4bec7f5360eef32a473171b181af/6031b/tag-example.jpg&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
-    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 18.823529411764707%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAEABQDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAEF/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEAMQAAAB36AH/8QAFBABAAAAAAAAAAAAAAAAAAAAEP/aAAgBAQABBQJ//8QAFBEBAAAAAAAAAAAAAAAAAAAAEP/aAAgBAwEBPwE//8QAFBEBAAAAAAAAAAAAAAAAAAAAEP/aAAgBAgEBPwE//8QAFBABAAAAAAAAAAAAAAAAAAAAEP/aAAgBAQAGPwJ//8QAFRABAQAAAAAAAAAAAAAAAAAAEBH/2gAIAQEAAT8hj//aAAwDAQACAAMAAAAQAA//xAAUEQEAAAAAAAAAAAAAAAAAAAAQ/9oACAEDAQE/ED//xAAUEQEAAAAAAAAAAAAAAAAAAAAQ/9oACAECAQE/ED//xAAVEAEBAAAAAAAAAAAAAAAAAAABEP/aAAgBAQABPxABf//Z&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
-  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;tag example&apos; title=&apos;&apos; src=&apos;/static/82ce4bec7f5360eef32a473171b181af/a22ce/tag-example.jpg&apos; srcset=&apos;/static/82ce4bec7f5360eef32a473171b181af/0b705/tag-example.jpg 170w,
-/static/82ce4bec7f5360eef32a473171b181af/31389/tag-example.jpg 340w,
-/static/82ce4bec7f5360eef32a473171b181af/a22ce/tag-example.jpg 680w,
-/static/82ce4bec7f5360eef32a473171b181af/6031b/tag-example.jpg 737w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
-  &lt;/a&gt;
-    &lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;Frontmatter 의 태그를 통해 쉽게 문서를 분류하고 검색할 수 있습니다. 여러분의 모든 태그는 &lt;code class=&quot;language-text&quot;&gt;https://siteUrl/tags&lt;/code&gt; 경로에서 확인하고, 검색할 수 있습니다.&lt;/p&gt;
-&lt;h2&gt;5. 시리즈&lt;/h2&gt;
-&lt;p&gt;&lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 677px; margin-bottom: 16px;&apos;&gt;
-      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/1ea4e56966cb5fb6e110d32124fd883c/d1584/series-example.jpg&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
-    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 17.058823529411764%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAADABQDASIAAhEBAxEB/8QAFwABAAMAAAAAAAAAAAAAAAAAAAECBf/EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhADEAAAAdqwSD//xAAVEAEBAAAAAAAAAAAAAAAAAAABEP/aAAgBAQABBQIv/8QAFBEBAAAAAAAAAAAAAAAAAAAAEP/aAAgBAwEBPwE//8QAFBEBAAAAAAAAAAAAAAAAAAAAEP/aAAgBAgEBPwE//8QAFBABAAAAAAAAAAAAAAAAAAAAEP/aAAgBAQAGPwJ//8QAFRABAQAAAAAAAAAAAAAAAAAAARD/2gAIAQEAAT8hF//aAAwDAQACAAMAAAAQ8A//xAAUEQEAAAAAAAAAAAAAAAAAAAAQ/9oACAEDAQE/ED//xAAUEQEAAAAAAAAAAAAAAAAAAAAQ/9oACAECAQE/ED//xAAYEAEAAwEAAAAAAAAAAAAAAAABABAhEf/aAAgBAQABPxAk0GGHCv/Z&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
-  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;series example&apos; title=&apos;&apos; src=&apos;/static/1ea4e56966cb5fb6e110d32124fd883c/d1584/series-example.jpg&apos; srcset=&apos;/static/1ea4e56966cb5fb6e110d32124fd883c/0b705/series-example.jpg 170w,
-/static/1ea4e56966cb5fb6e110d32124fd883c/31389/series-example.jpg 340w,
-/static/1ea4e56966cb5fb6e110d32124fd883c/d1584/series-example.jpg 677w&apos; sizes=&apos;(max-width: 677px) 100vw, 677px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
-  &lt;/a&gt;
-    &lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;여러분이 연관된 여러개의 문서를 작성할 때 시리즈를 사용할 수 있습니다. Frontmatter 에 작성된 시리즈가 같은 문서끼리 묶여 문서 상단에 리스트로 표시됩니다. 시리즈는 일련의 순서가 있는 문서들을 작성할 때 유용하게 사용할 수 있습니다. 시리즈는 문서의 작성 날짜 순서대로 정렬됩니다.&lt;/p&gt;
-&lt;p&gt;현재 문서는 &lt;code class=&quot;language-text&quot;&gt;gatsby-starter-hoodie 로 블로그 시작하기&lt;/code&gt; 라는 시리즈로 설정되어 있습니다.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[🚀 2. 빠르게 시작하기]]></title><description><![CDATA[아래 단계를 따라서 여러분의 블로그를 시작하세요. 굉장히 쉬워요 😉. 1. Gatsby 사이트 생성 컴퓨터에 node.js 와 gatsby-cli 가 설치되어 있어야합니다. 2. 개발 서버 시작 이제 localhost:800…]]></description><link>https://ms0828.github.io/quick-start-kr/</link><guid isPermaLink="false">https://ms0828.github.io/quick-start-kr/</guid><pubDate>Fri, 02 Apr 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;아래 단계를 따라서 여러분의 블로그를 시작하세요. 굉장히 쉬워요 😉.&lt;/p&gt;
-&lt;h2&gt;1. Gatsby 사이트 생성&lt;/h2&gt;
-&lt;blockquote&gt;
-&lt;p&gt;컴퓨터에 &lt;strong&gt;node.js&lt;/strong&gt; 와 &lt;strong&gt;gatsby-cli&lt;/strong&gt; 가 설치되어 있어야합니다.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;$ npx gatsby new my-hoodie-blog https://github.com/devHudi/gatsby-starter-hoodie&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2&gt;2. 개발 서버 시작&lt;/h2&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;$ cd my-hoodie-blog
-$ npm run start&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;이제 localhost:8000 으로 여러분의 블로그를 접속할 수 있습니다.&lt;/p&gt;
-&lt;h2&gt;3. Github 레포지토리 생성&lt;/h2&gt;
-&lt;p&gt;Utterance 댓글 위젯은 &lt;strong&gt;Github 이슈 시스템&lt;/strong&gt; 기반입니다. 따라서 각 블로그 별 Github 레포지토리가 필요합니다. 또한 여러분이 Github Pages 혹은 Netlify 로 블로그를 배포하길 원한다면, Github 레포지토리는 필수입니다.&lt;/p&gt;
-&lt;p&gt;만약 Github 레포지토리를 생성하는 법을 모른다면, &lt;a href=&quot;https://docs.github.com/en/github/getting-started-with-github/create-a-repo&quot;&gt;Github 공식 문서&lt;/a&gt; 를 참조하세요.&lt;/p&gt;
-&lt;h3&gt;원격 레포지토리 등록&lt;/h3&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;git remote add origin https://github.com/{YOUR_GITHUB_NAME}/{YOUR_REPOSITORY_NAME}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2&gt;4. blog-config.js 작성&lt;/h2&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;module&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;exports &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;token literal-property property&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;MY BLOG&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;token literal-property property&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;Hello, This is my blog&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;token literal-property property&quot;&gt;author&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;YOUR NAME&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;token literal-property property&quot;&gt;siteUrl&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;https://myblog.com&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;token literal-property property&quot;&gt;links&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;token literal-property property&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;https://github.com&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;token literal-property property&quot;&gt;facebook&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;https://www.facebook.com&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;token literal-property property&quot;&gt;instagram&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;https://www.instagram.com&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;token literal-property property&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;https://www.google.com/&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;token literal-property property&quot;&gt;utterances&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;token literal-property property&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;{YOUR_GITHUB_NAME}/{YOUR_REPOSITORY_NAME}&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;token literal-property property&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;pathname&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;gatsby-starter-hoodie 는 &lt;code class=&quot;language-text&quot;&gt;blog-config.js&lt;/code&gt; 라는 설정 파일을 제공합니다. 이 파일에서 블로그 정보, 작성자 프로필, Utterance 설정 등을 작성할 수 있습니다. 여러분 블로그 설정에 맞게 &lt;code class=&quot;language-text&quot;&gt;blog-config.js&lt;/code&gt; 를 설정하세요. 하지만, &lt;code class=&quot;language-text&quot;&gt;utterances.type&lt;/code&gt; 속성은 수정하지 않는 것을 권장합니다.&lt;/p&gt;
-&lt;h3&gt;프로필 이미지 변경&lt;/h3&gt;
-&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;static/profile.png&lt;/code&gt; 에 위치한 이미지 파일을 원하는 이미지 파일로 교체하세요. 만약 파일명을 변경하고 싶다면, &lt;code class=&quot;language-text&quot;&gt;src/components/Bio.jsx&lt;/code&gt; 의 소스코드를 수정해야합니다.&lt;/p&gt;
-&lt;h2&gt;5. 포스트 추가&lt;/h2&gt;
-&lt;p&gt;마크다운 포스트는 &lt;code class=&quot;language-text&quot;&gt;contents/posts&lt;/code&gt; 경로에 위치해있습니다. 해당 경로에서 글을 작성할 수 있습니다. &lt;a href=&quot;https://devHudi.github.io/gatsby-starter-hoodie/writing-guide&quot;&gt;여기를 클릭하여&lt;/a&gt; 더 자세한 글 작성 방법을 확인하세요.&lt;/p&gt;
-&lt;h2&gt;6. 블로그 배포하기&lt;/h2&gt;
-&lt;h3&gt;6-1 Netlify 를 통해&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.netlify.com/blog/2016/02/24/a-step-by-step-guide-gatsby-on-netlify/&quot;&gt;A Step-by-Step Guide: Gatsby on Netlify&lt;/a&gt; 문서를 참조하여, Netlify 를 Github 레포지토리와 연결할 수 있습니다. 이 과정은 어렵지 않습니다.&lt;/p&gt;
-&lt;p&gt;Github 레포지토리와 연결이 되었다면, Github 레포지토리에 변경사항이 발생할 때 마다 자동으로 여러분의 블로그에 배포됩니다.&lt;/p&gt;
-&lt;h3&gt;6-2. Github Pages 를 통해&lt;/h3&gt;
-&lt;h4&gt;상황 1&lt;/h4&gt;
-&lt;p&gt;레포지토리 이름이 &lt;code class=&quot;language-text&quot;&gt;{YOUR_GITHUB_NAME}.github.io&lt;/code&gt; 형태일 경우, 아래 명령어를 실행해주세요.&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;$ npm run deploy-gh&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h4&gt;상황 2&lt;/h4&gt;
-&lt;p&gt;레포지토리 이름이 &lt;code class=&quot;language-text&quot;&gt;{YOUR_GITHUB_NAME}.github.io&lt;/code&gt; 형태가 아닐 경우, 아래 명령어를 실행해주세요.&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;$ npm run deploy-gh-prefix-paths&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;만약 위와 같은 경우 &lt;code class=&quot;language-text&quot;&gt;gatsby-config.js&lt;/code&gt; 에서 &lt;code class=&quot;language-text&quot;&gt;pathPrefix&lt;/code&gt; 를 여러분의 레포지토리 이름으로 바꿔야합니다.&lt;/p&gt;
-&lt;h3&gt;6-3. 다른 플랫폼&lt;/h3&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;$ npm run build&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;위 명령어로 Gastby 웹사이트를 빌드할 수 있습니다. 빌드 결과물은 &lt;code class=&quot;language-text&quot;&gt;/public&lt;/code&gt; 에 저장됩니다. &lt;code class=&quot;language-text&quot;&gt;/public&lt;/code&gt; 디렉토리를 여러분이 사용하는 플랫폼의 배포 명령을 통해 배포해주세요.&lt;/p&gt;
-&lt;h2&gt;7. 커스터마이징&lt;/h2&gt;
-&lt;h3&gt;프로젝트 구조&lt;/h3&gt;
-&lt;p&gt;아래 프로젝트 구조를 참고하여 커스터마이징 할 수 있습니다 🙊.&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;├── node_modules
-├── contents
-│   └── posts // your articles are here
-├── public // build outputs are here
-└── src
-    ├── assets
-    │   └── theme // theme config is here
-    ├── components
-    │   └── Article
-    │       └── Body
-    │           └── StyledMarkdown
-    │               └── index.jsx // markdown styles are here
-    │   ...
-    ├── fonts // webfonts are here
-    ├── hooks
-    ├── images
-    ├── pages // page components are here
-    ├── reducers
-    ├── templates // post components are here
-    └── utils&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item></channel></rss>
+&lt;p&gt;본 블로그는 인프런 &apos;김영한&apos;님의 강의를 정리한 내용입니다. 개인 공부 목적으로 작성된 글이며, 100% 정확한 내용이 아닐 수 있습니다.
+&lt;br&gt;출처  &lt;a href=&quot;https://www.inflearn.com/course/ORM-JPA-Basic&quot;&gt;https://www.inflearn.com/course/ORM-JPA-Basic&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content:encoded></item></channel></rss>
