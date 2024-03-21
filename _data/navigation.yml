@@ -1,0 +1,45 @@
+# main links
+main:
+  - title: "Home"
+    url: https://choiiis.github.io/
+
+  - title: "About"
+    url: /about/
+
+  - title: "GitHub"
+    url: https://github.com/choiiis
+
+  # - title: "Projects"
+  #   url: /projects/
+
+  # - title: "Categories"
+  #   url: /categories/
+
+# sidebar navigation (categories)
+# 2022.09.24 sidebar ver2.0 : main-sub version
+categories:
+  - title: "CS"
+    children:
+      - title: "Computer Structure"
+        url: /categories/computer_structure/
+      - title: "Data Structure"
+        url: /categories/data_structure/
+      - title: "Algorithm"
+        url: /categories/algorithm/
+
+  - title: "Language"
+    children:
+      - title: "C/C++"
+        url: /categories/c/
+
+  - title: "Tech"
+    children:
+      - title: "Computer Graphics"
+        url: /categories/computer_graphics/
+
+  - title: "Back"
+    children:
+      - title: "JPA"
+        url: /categories/jpa/
+      - title: "JPQL"
+        url: /categories/jpql/
