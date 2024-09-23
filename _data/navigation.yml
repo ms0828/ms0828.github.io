@@ -26,6 +26,8 @@ categories:
         url: /categories/data_structure/
       - title: "Algorithm"
         url: /categories/algorithm/
+      - title: "Computer Network"
+        url: /categories/network/
 
   - title: "Language"
     children:
