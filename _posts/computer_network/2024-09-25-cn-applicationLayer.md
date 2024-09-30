@@ -199,3 +199,23 @@ UDP는 매우 간단하고 빠르게 데이터를 전송하는 대신, 데이터
 * 따라서 애플리케이션의 요구 사항에 따라 적합한 Protocol이 선택된다.
 
 <br><br>
+
+
+
+
+### 보충
+
+1. integrity vs throughput이 중요할지 나머지 Layer를 선택할 수 있다.
+2. protocol은 무엇을 정의하느냐?
+- Type (request, response)
+- syntax(문법) (http request message general format 참고, 어떤 필드가 어떤 순서로 정의되는지)
+- semantic : 각 필드가 어떤 정보를 포함하는지 정의  
+- rules : 각 메세지에 어떻게 처리할건지 정의
+3. 프로토콜을 만들 때 무엇이 중요한지에 따라 다르게 구현 (1번과 동일한 맥락)
+4. TCP
+- Reliable(no error, no loss, in order)
+- flow control -> 받을 사람이 받을 만큼만 보냄
+- congestion control -> 네트워크가 소화할만큼만 보냄 (속도를 조절)
+5. UDP
+- TCP가 가지는 기능이 없지만 빠르다.
+- 실시간 속도가 중요시 되는 통신에 사용 (게임 등)

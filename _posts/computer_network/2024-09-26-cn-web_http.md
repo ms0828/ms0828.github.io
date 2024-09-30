@@ -104,3 +104,48 @@ HTTP는 상태를 유지하지 않는(stateless) 프로토콜로써, 서버는 �
     모든 객체를 전송한 후에야 TCP 연결이 닫힌다. 이는 non-persistent http보다 네트워크 리소스를 절약하고, 성능이 향상된다.
 
 
+<br><br>
+
+
+## HTTP Request Message
+
+1. Post method
+- 웹 페이지의 form 형식을 유저가 입력하여 entity body에 포함시킨 후, request message 전송
+2. Get method
+- 유저가 url field에 데이터를 전송하여 전달한 데이터를 요청하는 request message 전송
+3. Head method
+- 지정한 url을 get으로 요청한 후에 반환되는 요청 헤더
+4. Put method
+- ...
+
+<br><br>
+
+## Maintaining user/service State : cookies
+user/service의 state인 cookies를 사용할 때의 장단점
+
+
+## Web Caches
+Proxy Server의 존재 - response time을 줄일 수 있음
+
+
+
+
+### 보충
+1. **Web Service의 프로토콜 스택 (Https, ASCII, TLS, TCP, ... )  -> 각 서비스마다 프로토콜 스택이 존재?!**
+2. HTML과 연결된 png, jpg 등 여러 파일을 오브젝트라고 부름
+3. 위 오브젝트 들이 같은 서버에 있을 필요X
+4. Persistent의 두 가지 방식
+    - Pipeline (parallel)  (한 번에 여러 객체를 받아옴)
+    - Serial
+
+
+시험 10월26일
+- Application Layer까지
+
+시험 11월 중순 2번째 중간고사
+
+
+숙제는 두 가지
+연습문제는 제출X (개인 공부용)
+1. Wireshark
+2. soket
