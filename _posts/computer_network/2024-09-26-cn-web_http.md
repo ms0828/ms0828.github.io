@@ -189,7 +189,8 @@ HTTP Response Message는 human-readable format인 ASCII로 작성되며, 위와 
 <br><br><br>
 
 
-## Web Caches (Proxy Servers)
+## Web Caches
+### Proxy Server
 Web Cache는 사용자가 웹 사이트를 방문할 때 웹 페이지, 이미지 등 자주 사용되는 콘텐츠를 미리 저장하여, 다음에 동일한 요청이 발생할 때 더 빠르게 응답할 수 있도록 돕는 기술이다.
 > 클라이언트와 서버 사이에 위치하여 네트워크 트래픽을 줄이고 웹 페이지 로딩 속도를 개선하는 역할을 한다.
 
@@ -209,4 +210,16 @@ Web Cache는 사용자가 웹 사이트를 방문할 때 웹 페이지, 이미�
 2. 기관의 네트워크 링크에서 발생하는 트래픽을 줄임
 3. 더 효과적으로 콘텐츠를 전달할 수 있게 도와줌
 - 리소스가 부족한 제공자도 캐시를 활용해 성능을 향상
+
+<br><br>
+
+
+### Cache에 대한 Conditional GET
+이미 캐시하고 있는 데이터에 대해, 클라이언트가 서버에게 데이터가 최신 상태인지 확인하는 요청 메세지를 말한다.
+<br>
+
+![conditional_get](/assets\images\posts_img\network\conditional_get.png)
+
+> 요청에는 **If-modified-since: (date)** 라인이 포함되며, date로 부터 최신화된 항목이 없으면 서버는 **HTTP/1.0 304 Not Modified** 를 반환하고, 최신화된 항목이 있으면 서버는 **HTTP/1.0 200 OK** 와 함께 최신화된 데이터를 반환한다.
+
 
