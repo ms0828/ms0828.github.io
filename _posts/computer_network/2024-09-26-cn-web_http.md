@@ -23,6 +23,7 @@ last_modified_at: 2024-09-26
 
 ### HTTP (Hypertext Transfer Protocol)
 ![web](/assets\images\posts_img\network\web_overview.png)
+
 HTTP는 웹의 Application Layer Protocol로, 클라이언트-서버 모델을 기반으로 동작한다.<br>
 
 - 클라이언트(client)<br>
