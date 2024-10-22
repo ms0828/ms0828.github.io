@@ -27,7 +27,7 @@ last_modified_at: 2024-09-09
 - Node : 네트워크에 연결된 장치나 컴퓨터 (혹은 End system or Host or network edge 라고 불림)
 - Switch : 동일한 네트워크 내에서 데이터를 교환하는 장치로, 네트워크 안의 장치들 간의 통신을 관리
 - Router : 네트워크 간 데이터를 전달하고 올바른 경로를 선택하는 장치
-- Protocol : 네트워크 상에서 데이터를 주고받는 규칙과 형식, 예를 들어 TCP/IP, HTTP가 있음
+- Protocol : 네트워크 상에서 데이터를 주고받는 규칙과 형식, 예를 들어 TCP/UDP, HTTP가 있음
 
 
 <br>
@@ -36,7 +36,7 @@ last_modified_at: 2024-09-09
 ### What is the Internet?
 - 인터넷은 전 세계적으로 연결된 컴퓨터 네트워크들의 거대한 집합를 말한다.<br>
 - 수많은 개별 네트워크와 장치들이 서로 통신하고 정보를 주고받을 수 있도록 하는 글로벌 네트워크이다.<br>
-- 인터넷은 TCP/IP 프로토콜을 사용하여 데이터를 전송하며, 웹 브라우징, 이메일, 파일 전송 등의 다양한 서비스들을 지원한다.
+- 인터넷은 특정 프로토콜을 사용하여 데이터를 전송하며, 웹 브라우징, 이메일, 파일 전송 등의 다양한 서비스들을 지원한다.
 
 ![internet](/assets\images\posts_img\network\internet_introduction.png)
 
