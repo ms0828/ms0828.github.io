@@ -46,34 +46,5 @@ last_modified_at: 2024-09-17
 
 ![protocol_layer](/assets\images\posts_img\network\protocol_layer.png)
 
-<br>
 
-#### **Application Layer**<br>
-  사용자가 네트워크를 통해 데이터를 주고받을 수 있게 해주는 계층이다. 애플리케이션 계층은 네트워크 상에서 애플리케이션 간의 상호작용을 담당하며, 네트워크 기반의 서비스(웹 브라우징, 이메일 등)에 필요한 모든 데이터를 처리한다. <br>
-  주로 다음과 같은 프로토콜이 사용된다.
-   - HTTP
-   - FTP
-   - SMTP
-  
-  <br><br>
-
-#### **Transport Layer**<br>
-   클라이언트와 서버 간의 데이터 전송을 담당하는 계층으로, 주로 신뢰성 있는 전송(TCP)과 비연결성 전송(UDP, 빠른 전송)을 관리한다. 애플리케이션 계층에서 받은 데이터를 전송 가능한 크기로 나누어 TCP에서는 segment, UDP에서는 datagram 형태로 전송한다. 또한, TCP의 경우 수신된 데이터를 순서대로 재조립하고, 오류 발생 시 재전송을 통해 데이터의 신뢰성을 보장한다. 주로 TCP와 UDP 프로토콜이 사용된다.
-   - TCP
-   - UDP
-  <br><br>
-
-#### **Network Layer**<br>
-  데이터 패킷을 목적지까지 전달하는 역할을 담당하는 계층이다. 이 계층의 주요 기능은 전송 계층에서 내려온 데이터를 패킷으로 감싸고, 데이터 패킷의 경로를 설정하여 적절한 네트워크를 통해 전송한다. 여기서 주로 사용되는 프로토콜이 IP(Internet Protocol)이다.
-   - IP
-  <br><br>
-
-#### **Data Link Layer**<br>
-  (수업시간에 듣고 정리할 예정)
-  <br><br>
-
-#### **Physical Layer**<br>
-  (수업시간에 듣고 정리할 예정)
-
-  <br><br>
 
